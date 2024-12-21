@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "embla-carousel-react": "^8.5.1",
     "mongodb": "^6.12.0",
     "mongoose": "^8.9.1",
     "next": "15.1.1",
