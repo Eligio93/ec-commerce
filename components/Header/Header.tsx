@@ -4,15 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function Header() {
-  const [openMenu, setOpenMenu] = useState(true);
+  const [openMenu, setOpenMenu] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [openUser, setOpenUser] = useState(false);
 
   return (
     <div className="header h-16 flex items-center p-3 text-orange-400 rounded-b-lg relative">
-      {openMenu && <Navbar />}
       {/* Hamburger */}
-      <button onClick={() => setOpenMenu(!openMenu)} className="flex-1 justify-start">
+      <button
+        onClick={() => setOpenMenu(!openMenu)}
+        className="flex-1 justify-start lg:hidden"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -28,10 +30,17 @@ export default function Header() {
       </button>
 
       {/*Title or Logo*/}
-      <Link href="/" className="font-bold mx-auto text-3xl flex-1 text-center">
+      <Link
+        href="/"
+        className="font-bold mx-auto text-3xl flex-1 text-center lg:text-left"
+      >
         Satur
       </Link>
-      <div className="flex items-center gap-4 flex-1 justify-end">
+
+      {/*NavBar*/}
+      <Navbar openMenu={openMenu} />
+
+      <div className="flex items-center gap-4 flex-1 justify-end sm:gap-5 md:gap-6 lg:gap-7 ">
         {/*Cart*/}
         <button>
           <svg
