@@ -6,9 +6,9 @@ import Link from "next/link";
 export default function Navbar({ openMenu }: { openMenu: boolean }) {
   return (
     <nav
-      className={`bg-white ${
+      className={`z-10 bg-white ${
         openMenu ? "block" : "hidden"
-      }    absolute top-16 left-0 border border-orange-300 w-full p-3 lg:flex lg:static lg:border-none lg:flex-1 lg:p-0`}
+      }    absolute top-16 left-0 border border-orange-300 w-full p-3 lg:flex lg:static lg:border-none lg:flex-1 lg:p-0 `}
     >
       <ul className="lg:flex lg:justify-between lg:w-full items-center">
         <li>
