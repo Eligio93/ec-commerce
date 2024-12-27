@@ -1,16 +1,21 @@
 "use client";
 import useEmblaCarousel from "embla-carousel-react";
+
 import menHeroImg from "@/public/menHero.jpg";
 import womanHeroImg from "@/public/womenHero.jpg";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Hero() {
-  const [emblaRef] = useEmblaCarousel();
+  const [emblaRef] = useEmblaCarousel({
+    breakpoints: {
+      "(min-width: 640px)": { watchDrag: false },
+    },
+  });
   return (
     <div className="embla overflow-hidden" ref={emblaRef}>
-      <div className="embla__container flex">
-        <div className="embla__slide flex-[0_0_100%] relative sm:flex-[0_0_50%]">
+      <div className="embla__container flex max-h-[425px]">
+        <div className="embla__slide flex-[0_0_100%] relative sm:flex-[0_0_50%] h-full">
           <Image src={menHeroImg} alt="menHeroImg" priority />
           <Link
             className="absolute bottom-6 left-3 rounded-full bg-orange-400 px-3 py-1 font-bold"
@@ -19,7 +24,7 @@ export default function Hero() {
             Explore Men
           </Link>
         </div>
-        <div className="embla__slide flex-[0_0_100%] relative sm:flex-[0_0_50%]">
+        <div className="embla__slide flex-[0_0_100%] relative sm:flex-[0_0_50%] h-full">
           <Image src={womanHeroImg} alt="menHeroImg" priority />
           <Link
             className="absolute bottom-6 left-3 rounded-full bg-orange-400 px-3 py-1 font-bold"
