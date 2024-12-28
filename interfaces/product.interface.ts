@@ -1,10 +1,13 @@
+import { Types } from "mongoose";
+
 export default interface ProductInterface {
   name: string;
   description: string;
   brand: string;
   price: number;
   images: string[];
-  category: string;
+  category: Types.ObjectId[];
+  genre: "men" | "women" | "unisex";
   stock: number;
   rating: number;
   specs?: {

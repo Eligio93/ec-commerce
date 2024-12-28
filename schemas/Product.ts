@@ -8,9 +8,10 @@ const ProductSchema = new Schema<ProductInterface>({
   brand: { type: String, required: true },
   price: { type: Number, required: true },
   images: [{ type: String, required: true }],
-  category: { type: String, required: true },
+  category: [{ type: Schema.Types.ObjectId, ref: "Category", required: true }],
+  genre: { type: String, required: true },
   stock: { type: Number, required: true },
-  rating: { type: Number, required: true },
+  rating: { type: Number, required: true, max: 5 },
   specs: {
     height: Number,
     width: Number,
@@ -22,6 +23,8 @@ const ProductSchema = new Schema<ProductInterface>({
   isLive: { type: Boolean, required: true },
 });
 
-const Product = mongoose.models.Product ||mongoose.model<ProductInterface>("Product", ProductSchema);
+const Product =
+  mongoose.models.Product ||
+  mongoose.model<ProductInterface>("Product", ProductSchema);
 
 export default Product;
