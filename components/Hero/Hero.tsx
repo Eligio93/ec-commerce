@@ -14,9 +14,14 @@ export default function Hero() {
   });
   return (
     <div className="embla overflow-hidden" ref={emblaRef}>
-      <div className="embla__container flex max-h-[425px]">
-        <div className="embla__slide flex-[0_0_100%] relative sm:flex-[0_0_50%] h-full">
-          <Image src={menHeroImg} alt="menHeroImg" priority />
+      <div className="embla__container flex max-h-[425px] gap-5">
+        <div className="embla__slide flex-[0_0_100%] relative sm:flex-1 h-full">
+          <Image
+            src={menHeroImg}
+            alt="menHeroImg"
+            priority
+            className="rounded-lg"
+          />
           <Link
             className="absolute bottom-6 left-3 rounded-full bg-orange-400 px-3 py-1 font-bold"
             href={"/products/men"}
@@ -24,8 +29,13 @@ export default function Hero() {
             Explore Men
           </Link>
         </div>
-        <div className="embla__slide flex-[0_0_100%] relative sm:flex-[0_0_50%] h-full">
-          <Image src={womanHeroImg} alt="menHeroImg" priority />
+        <div className="embla__slide flex-[0_0_100%] relative sm:flex-1 h-full">
+          <Image
+            className="rounded-lg"
+            src={womanHeroImg}
+            alt="menHeroImg"
+            priority
+          />
           <Link
             className="absolute bottom-6 left-3 rounded-full bg-orange-400 px-3 py-1 font-bold"
             href={"/products/men"}
