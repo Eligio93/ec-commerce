@@ -42,7 +42,7 @@ export default function MainCategories() {
               key={category._id}
               className={`
               ${index > 3 && !viewMore ? "hidden" : "flex"}
-             flex-col gap-3 items-center flex-[0_0_100%] sm:flex  sm:p-2 sm:flex-[0_0_48%] md:flex-[0_0_28%] lg:flex-[0_0_20%] rounded-lg border hover:shadow-lg`}
+             flex-col gap-3 items-center flex-[0_0_100%] sm:flex  sm:p-2 sm:flex-[0_0_48%] md:flex-[0_0_29%] lg:flex-[0_0_32%] rounded-lg border hover:shadow-lg`}
             >
               <div className="relative w-full h-[100px] md:h-[150px]">
                 <Image
