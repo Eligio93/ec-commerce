@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 
 export default interface UserInterface {
+    _id:string;
     name: string;
     lastName: string;
     email: string;
