@@ -24,13 +24,19 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col">
-      <label htmlFor="email">Email:</label>
-      <input type="email" id="email" name="email" />
-      <label htmlFor="password">Password:</label>
-      <input type="password" id="password" name="password" />
-      {error && <p>{error}</p>}
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <form onSubmit={handleLogin} className="flex flex-col">
+        <label htmlFor="email">Email:</label>
+        <input type="email" id="email" name="email" />
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" name="password" />
+        {error && <p>{error}</p>}
+        <button type="submit">Login</button>
+        <p>Or</p>
+      </form>
+      <button type="button" onClick={async () => await signIn("google")}>
+        SIgnIn With Google
+      </button>
+    </div>
   );
 }
