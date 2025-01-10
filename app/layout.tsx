@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header/Header";
+import { getServerSession } from "next-auth";
+import AuthProvider from "@/config/AuthProvider";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,13 +15,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = getServerSession();
   return (
     <html lang="en">
-      <body
-        className={`antialiased max-w-screen-xl mx-auto`}
-      >
-        <Header />
-        {children}
+      <body className={`antialiased max-w-screen-xl mx-auto`}>
+        <AuthProvider session={session}>
+          <Header />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
