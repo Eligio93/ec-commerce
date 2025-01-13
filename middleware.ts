@@ -1,16 +1,22 @@
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getServerSession } from "next-auth";
 
-// This function can be marked `async` if using `await` inside
-export async function middleware(request: NextRequest) {
-  const session = await getServerSession();
-  console.log("SESSION", session);
-  console.log("REQUEST", request);
-  return NextResponse.next();
-}
+export default withAuth(
+  // `withAuth` augments your `Request` with the user's token.
+  function middleware(req) {
+    const token = req.nextauth.token;
+    if (req.nextUrl.pathname === "/dashboard") {
+      if (token?.isAdmin) {
+        return NextResponse.next();
+      } else {
+        return NextResponse.redirect(
+          new URL("/accessDenied", req.nextUrl.origin)
+        );
+      }
+    }
+    console.log("REQ", req);
+    console.log("TOKEN", req.nextauth.token);
+  }
+);
 
-// See "Matching Paths" below to learn more
-export const config = {
-  matcher: ["/login", "/register"],
-};
+export const config = { matcher: ["/dashboard"] };
