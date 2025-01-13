@@ -2,9 +2,12 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 export default function Login() {
   const [error, setError] = useState<string>();
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   async function handleLogin(e: any) {
@@ -19,7 +22,7 @@ export default function Login() {
       setError("Invalid email or password");
     }
     if (res?.ok) {
-      router.back();
+      router.push(searchParams.get("callbackUrl") || "/");
     }
   }
 
@@ -34,7 +37,14 @@ export default function Login() {
         <button type="submit">Login</button>
         <p>Or</p>
       </form>
-      <button type="button" onClick={async () => await signIn("google")}>
+      <button
+        type="button"
+        onClick={async () => {
+          await signIn("google", {
+            callbackUrl: searchParams.get("callbackUrl") || "/",
+          });
+        }}
+      >
         SIgnIn With Google
       </button>
     </div>
