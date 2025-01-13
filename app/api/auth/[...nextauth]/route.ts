@@ -7,12 +7,14 @@ import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
 import GoogleProfile from "@/interfaces/googleProfile.interface";
 import { HydratedDocument } from "mongoose";
+import type { NextAuthOptions } from "next-auth";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 15 * 24 * 60 * 60,
+    maxAge: 15 * 24 * 60 * 60, // 15 days
   },
+  //defines the default sign-in page
   pages: {
     signIn: "/login",
   },
@@ -56,45 +58,39 @@ const handler = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      //if the user login with Google
       if (account?.provider === "google") {
         const googleProfile = profile as GoogleProfile;
         await connectDB();
         try {
           const existingUser: UserInterface | null = await User.findOne({
-            email: googleProfile?.email,
+            //check if the user is already in the database
+            email: googleProfile.email,
           });
           if (!existingUser) {
+            //if it s not there creates a new user
             const user: HydratedDocument<UserInterface> = new User({
-              name: googleProfile?.given_name,
-              lastName: googleProfile?.family_name,
-              email: googleProfile?.email,
-              profilePicture: googleProfile?.picture,
+              name: googleProfile.given_name,
+              lastName: googleProfile.family_name,
+              email: googleProfile.email,
+              profilePicture: googleProfile.picture,
               isRegistered: true,
               isAdmin: false,
             });
             await user.save();
-            return true;
+            return true; //return true if the user is created
           }
         } catch (err) {
           console.log(err);
-          return false;
+          return false; //if there s any error return false and don t
         }
       }
-      return true;
-    },
-    // async redirect({ url, baseUrl }) {
-    //   return url;
-    // },
-    async session({ session, user, token }) {
-      if (token) {
-        session.user = {
-          ...session.user,
-          id: token.userId as string,
-          isAdmin: token.isAdmin as boolean,
-        };
+      if (user) {
+        //if the user login with credentials means that user obect exists
+        return true; //so return true
+      } else {
+        return false;
       }
-
-      return session;
     },
     async jwt({ token, user, account, profile }) {
       if (account?.provider === "credentials") {
@@ -108,11 +104,31 @@ const handler = NextAuth({
             email: profile?.email,
           });
         token.userId = existingUser?._id;
-        token.isAdmin = existingUser?.isAdmin;
+        token.isAdmin = existingUser?.isAdmin as boolean;
       }
+
       return token;
     },
+    async session({ session, user, token }) {
+      if (token) {
+        session.user = {
+          ...session.user,
+          id: token.userId,
+          isAdmin: token.isAdmin,
+        };
+      }
+      return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
   },
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
