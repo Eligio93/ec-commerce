@@ -1,7 +1,6 @@
 import { Types } from "mongoose";
 
 export default interface ProductInterface {
-  _id: string;
   name: string;
   description: string;
   brand: string;
