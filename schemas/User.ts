@@ -9,6 +9,7 @@ const UserSchema = new Schema<UserInterface>(
     email: { type: String, required: true },
     password: { type: String },
     profilePicture: { type: String },
+    phone: { type: String },
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     address: {
       country: { type: String },
@@ -24,5 +25,7 @@ const UserSchema = new Schema<UserInterface>(
   },
   { timestamps: true }
 );
-const User = mongoose.models.User || mongoose.model<UserInterface>("User", UserSchema);
+const User =
+  mongoose.models.User<UserInterface> ||
+  mongoose.model<UserInterface>("User", UserSchema);
 export default User;

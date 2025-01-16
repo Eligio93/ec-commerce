@@ -16,6 +16,7 @@ export default interface UserInterface {
       address2?: string;
     };
   };
+  phone?: string;
   isAdmin: boolean;
   isRegistered: boolean;
 }
