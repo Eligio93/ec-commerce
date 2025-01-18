@@ -24,7 +24,7 @@ export default function DashboardAddress({ user }: { user: UserInterface }) {
 
   function selectCountry(e: any) {
     setSelectedCountry(removeEmoji(e.target.value));
-    console.log(selectedCountry);
+    // console.log(selectedCountry);
   }
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function DashboardAddress({ user }: { user: UserInterface }) {
         setSelectedCountry(removeEmoji(data.countries[0].label));
       });
   }, []);
-  console.log(selectedCountry);
+  // console.log(selectedCountry);
   return (
     <section>
       <div className="flex justify-between">
@@ -87,6 +87,28 @@ export default function DashboardAddress({ user }: { user: UserInterface }) {
             className="border w-[70%]"
             autoComplete="off"
             disabled
+          />
+        </section>
+        <section className="flex">
+          <label className="w-[30%] text-sm" htmlFor="streetline1">
+            Street Line 1
+          </label>
+          <input
+            type="text"
+            id="streetline1"
+            name="streetline1"
+            className="border w-[70%]"
+          />
+        </section>
+        <section className="flex">
+          <label className="w-[30%] text-sm" htmlFor="streetline2">
+            Street Line 2
+          </label>
+          <input
+            type="text"
+            id="streetline2"
+            name="streetline2"
+            className="border w-[70%]"
           />
         </section>
       </form>
