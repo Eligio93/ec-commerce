@@ -3,6 +3,7 @@ import UserInterface from "@/interfaces/user.interface";
 import { HydratedDocument } from "mongoose";
 import { useState } from "react";
 import { ProfileFormState } from "@/schemas/validation";
+import { Toaster, toast } from "sonner";
 
 export default function DashboardProfile({
   user,
@@ -21,6 +22,11 @@ export default function DashboardProfile({
     password: user.password,
     oldPassword: undefined,
     newPassword: undefined,
+    country: user.address?.country || undefined,
+    city: user.address?.city,
+    zipCode: user.address?.zipCode,
+    streetLine1: user.address?.street?.address1,
+    streetLine2: user.address?.street?.address2,
   });
 
   async function handleSubmit(e: any) {
@@ -36,10 +42,13 @@ export default function DashboardProfile({
       const data = await res.json();
 
       setResponseData(data);
-
-      console.log("DATAS", data);
+      if (res.ok) {
+        setIsEditing(false);
+        toast.success(data.message);
+      }
     } catch (error) {
-      console.log("ERRROR", error);
+      console.log("ERROR", error);
+      toast.error("Something went wrong");
     }
   }
 
@@ -56,6 +65,11 @@ export default function DashboardProfile({
       password: user.password,
       oldPassword: undefined,
       newPassword: undefined,
+      country: user.address?.country,
+      city: user.address?.city,
+      zipCode: user.address?.zipCode,
+      streetLine1: user.address?.street?.address1,
+      streetLine2: user.address?.street?.address2,
     });
     setResponseData(undefined);
     if (changingPassword) {
@@ -65,6 +79,7 @@ export default function DashboardProfile({
   }
   return (
     <section>
+      <Toaster richColors position="bottom-center" />
       <div className="flex justify-between">
         <h2>Profile</h2>
         <button
@@ -77,6 +92,7 @@ export default function DashboardProfile({
 
       <hr />
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+        {/*NAME */}
         <section className="flex items-center">
           <label htmlFor="name" className="w-[40%] text-sm">
             Name:
@@ -97,6 +113,8 @@ export default function DashboardProfile({
             {responseData.errors.name}
           </p>
         )}
+
+        {/*LAST NAME*/}
         <section className="flex">
           <label htmlFor="lastName" className="w-[40%] text-sm">
             Last Name:
@@ -116,6 +134,8 @@ export default function DashboardProfile({
             {responseData.errors.lastName}
           </p>
         )}
+
+        {/*EMAIL*/}
         <section className="flex">
           <label className="w-[40%] text-sm" htmlFor="email">
             Email:
@@ -136,6 +156,7 @@ export default function DashboardProfile({
             {responseData.errors.email}
           </p>
         )}
+        {/*PASSWORD*/}
         {/*if the user has a password and is not changig the pasword leave the field disabled*/}
         {user.password && !changingPassword && (
           <section className="flex">
