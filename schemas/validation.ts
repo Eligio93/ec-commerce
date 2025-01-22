@@ -39,7 +39,7 @@ export type AuthFormState =
     }
   | undefined;
 
-export const EditProfileSchema = z.object({
+export const EditAccountSchema = z.object({
   name: z
     .string()
     .min(2, { message: "Name must be at least 2 characters" })
@@ -54,14 +54,31 @@ export const EditProfileSchema = z.object({
     .string()
     .email({ message: "Please enter a valid email address" })
     .trim(),
+  password: z.string().trim().optional(), // this is one is coming for validation in the form of encoded by bcrypt
   oldPassword: z
     .string()
     .min(8, { message: "Be at least 8 characters long" })
     .optional(),
-
   newPassword: z
     .string()
     .min(8, { message: "Be at least 8 characters long" })
+    .optional(),
+  country: z.string().trim().optional(),
+  city: z
+    .string()
+    .min(2, { message: "City must be at least 2 character" })
+    .optional(),
+  zipCode: z
+    .string()
+    .min(2, { message: "ZipCode must be at least 2 character long" })
+    .optional(),
+  streetLine1: z
+    .string()
+    .min(2, { message: "Please Enter a valid street Name" })
+    .optional(),
+  streetLine2: z
+    .string()
+    .min(2, { message: "Please Enter a valid street Name" })
     .optional(),
 });
 export type ProfileFormState =
@@ -72,6 +89,10 @@ export type ProfileFormState =
         email?: string[];
         oldPassword?: string[];
         newPassword?: string[];
+        city?: string[];
+        zipCode?: string[];
+        streetLine1?: string[];
+        streetLine2?: string[];
       };
       message?: string;
       success?: boolean;
