@@ -11,9 +11,7 @@ export default function DashboardProfile({
 }: {
   user: HydratedDocument<UserInterface>;
 }) {
-  console.log(user);
-
-  const [profileFields, setProfileFields] = useState({
+  const [formFields, setFormFields] = useState({
     name: user.name,
     lastName: user.lastName,
     email: user.email,
@@ -23,6 +21,7 @@ export default function DashboardProfile({
   })
   const [isEditing, setIsEditing] = useState(false);
   const { data: session, status, update } = useSession()
+  const [responseData, setREsponseData] = useState<ProfileFormState | undefined>(undefined)
 
   function handleEditing() { //when invoked reset the form to the user values and 
     setIsEditing(!isEditing)
@@ -31,7 +30,7 @@ export default function DashboardProfile({
 
   function handleChange(e: any) {
     const { name, value } = e.target;
-    setProfileFields({ ...profileFields, [name]: value });
+    setFormFields({ ...formFields, [name]: value });
 
   }
 
@@ -42,19 +41,25 @@ export default function DashboardProfile({
         `${process.env.NEXT_PUBLIC_URL}/api/users/${user._id}`,
         {
           method: "PUT",
-          body: JSON.stringify(profileFields),
+          body: JSON.stringify(formFields),
         }
       )
-      // setIsEditing(false)
-      toast.success('Profile updated successfully')
+      const data = await res.json();
+      if (!res.ok) {
+        setREsponseData(data);
+      } else {
+        setREsponseData(undefined)
+        setIsEditing(false)
+        toast.success('Profile updated successfully')
+      }
     } catch (error) {
-
+      console.log("ERROR", error);
+      toast.error('Something went wrong')
     } finally {
-      update();
+      update(); // update the session with the new user values
     }
-
-
   }
+
   return (
     <section>
       <div className="flex justify-between">
@@ -76,13 +81,18 @@ export default function DashboardProfile({
             type="text"
             id="name"
             name="name"
-            value={profileFields.name}
+            value={formFields.name}
             className="border w-[60%] py-1.5 pl-1 pr-3"
             autoComplete="off"
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
+        {responseData?.errors?.name && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData.errors.name}
+          </p>
+        )}
         <div className="flex items-center">
           <label htmlFor="lastName" className="w-[40%] text-sm">
             Last Name:
@@ -91,13 +101,18 @@ export default function DashboardProfile({
             type="text"
             id="lastName"
             name="lastName"
-            value={profileFields.lastName}
+            value={formFields.lastName}
             className="border w-[60%] py-1.5 pl-1 pr-3"
             autoComplete="off"
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
+        {responseData?.errors?.lastName && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData.errors.lastName}
+          </p>
+        )}
         <div className="flex items-center">
           <label htmlFor="email" className="w-[40%] text-sm">
             Email:
@@ -106,13 +121,18 @@ export default function DashboardProfile({
             type="email"
             id="email"
             name="email"
-            value={profileFields.email}
+            value={formFields.email}
             className="border w-[60%] py-1.5 pl-1 pr-3"
             autoComplete="off"
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
+        {responseData?.errors?.email && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData.errors.email}
+          </p>
+        )}
         {user.password && !isEditing && < div className="flex items-center">
           <label htmlFor="password" className="w-[40%] text-sm">
             Password:
@@ -121,7 +141,7 @@ export default function DashboardProfile({
             type="password"
             id="password"
             name="password"
-            value={profileFields.password?.slice(0, 8)}
+            value={formFields.password?.slice(0, 8)}
             className="border w-[60%] py-1.5 pl-1 pr-3"
             autoComplete="off"
             onChange={handleChange}
@@ -136,13 +156,19 @@ export default function DashboardProfile({
             type="password"
             id="oldPassword"
             name="oldPassword"
-            value={profileFields.oldPassword}
+            value={formFields.oldPassword}
             className="border w-[60%] py-1.5 pl-1 pr-3"
             autoComplete="off"
             onChange={handleChange}
             disabled={!isEditing}
+            placeholder='Type here your current password'
           />
         </div>
+          {responseData?.errors?.oldPassword && (
+            <p className="self-end w-[60%] text-sm text-red-500">
+              {responseData.errors.oldPassword}
+            </p>
+          )}
           <div className="flex items-center">
             <label htmlFor="newPassword" className="w-[40%] text-sm">
               New Password:
@@ -151,18 +177,22 @@ export default function DashboardProfile({
               type="password"
               id="newPassword"
               name="newPassword"
-              value={profileFields.newPassword}
+              value={formFields.newPassword}
               className="border w-[60%] py-1.5 pl-1 pr-3"
               autoComplete="off"
               onChange={handleChange}
               disabled={!isEditing}
+              placeholder="Type here your new password"
             />
           </div>
+          {responseData?.errors?.newPassword && (
+            <p className="self-end w-[60%] text-sm text-red-500">
+              {responseData.errors.newPassword}
+            </p>
+          )}
         </>
         }
-
         {isEditing && <button type="submit" className="bg-yellow-200 rounded-full py-1/2 px-2">Save</button>}
-        <button type='button' onClick={() => toast.success("Profile updated")}>give me a toaster</button>
       </form>
 
     </section >
@@ -285,11 +315,7 @@ export default function DashboardProfile({
 //           disabled={!isEditing}
 //         />
 //       </section>
-//       {responseData?.errors?.name && (
-//         <p className="self-end w-[60%] text-sm text-red-500">
-//           {responseData.errors.name}
-//         </p>
-//       )}
+//       
 
 //       {/*LAST NAME*/}
 //       <section className="flex">
