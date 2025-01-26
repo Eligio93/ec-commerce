@@ -111,7 +111,6 @@ export default function DashboardAddress({
   }
   return (
     <section>
-      <Toaster richColors position="bottom-center" />
       <div className="flex justify-between">
         <h2>Address</h2>
         <button
@@ -133,13 +132,12 @@ export default function DashboardAddress({
             id="country"
             className="bg-white w-[70%] "
             onChange={selectCountry}
-            value={`${
-              formData.country
+            value={`${formData.country
                 ? countries.find(
-                    (c) => removeEmoji(c.label) === formData.country
-                  )?.label
+                  (c) => removeEmoji(c.label) === formData.country
+                )?.label
                 : "--Select Country--"
-            }`}
+              }`}
             disabled={!isEditing}
           >
             <option value={undefined} disabled>
