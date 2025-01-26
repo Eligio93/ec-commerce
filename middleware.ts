@@ -5,7 +5,7 @@ export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   function middleware(req) {
     const token = req.nextauth.token;
-    if (req.nextUrl.pathname === "/admin") {
+    if (req.nextUrl.pathname.includes("/admin")) {
       if (token?.isAdmin) {
         return NextResponse.next();
       } else {
@@ -17,4 +17,4 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/admin", "/dashboard"] };
+export const config = { matcher: ["/admin/:path*", "/dashboard"] };
