@@ -25,7 +25,6 @@ export default function Header() {
     setOpenCart(false);
     setOpenUser(false);
   }
-
   return (
     <div className="header h-16 flex items-center p-3 text-orange-400 rounded-b-lg relative">
       <div className="flex-1 justify-start lg:hidden ">
@@ -94,6 +93,11 @@ export default function Header() {
                   <li>
                     <Link href={"/dashboard"}>Dashboard</Link>
                   </li>
+                  {session?.user.isAdmin && (
+                    <li>
+                      <Link href={"/admin"}>Admin</Link>
+                    </li>
+                  )}
                   <li>
                     <button onClick={async () => await signOut()}>
                       Logout
