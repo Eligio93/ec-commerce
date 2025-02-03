@@ -1,9 +1,9 @@
 "use client";
 import UserInterface from "@/interfaces/user.interface";
-import { HydratedDocument, set } from "mongoose";
-import { useState, useEffect } from "react";
-import { ProfileFormState } from "@/schemas/validation";
-import { Toaster, toast } from "sonner";
+import { HydratedDocument} from "mongoose";
+import { useState} from "react";
+import { profileValidationState } from "@/schemas/validation/profileValidation";
+import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
 export default function DashboardProfile({
@@ -17,14 +17,23 @@ export default function DashboardProfile({
     email: user.email,
     password: user.password,
     oldPassword: '',
-    newPassword: ''
+    newPassword: '',
   })
   const [isEditing, setIsEditing] = useState(false);
   const { data: session, status, update } = useSession()
-  const [responseData, setREsponseData] = useState<ProfileFormState | undefined>(undefined)
+  const [responseData, setResponseData] = useState<profileValidationState | undefined>(undefined)
 
   function handleEditing() { //when invoked reset the form to the user values and 
     setIsEditing(!isEditing)
+    setFormFields({
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      oldPassword: '',
+      newPassword: '',
+    })
+    setResponseData(undefined)
   }
 
 
@@ -41,14 +50,17 @@ export default function DashboardProfile({
         `${process.env.NEXT_PUBLIC_URL}/api/users/${user._id}`,
         {
           method: "PUT",
-          body: JSON.stringify(formFields),
+          body: JSON.stringify({ ...formFields, formSource: 'Profile' }),
         }
       )
       const data = await res.json();
       if (!res.ok) {
-        setREsponseData(data);
+        if (res.status === 404) {
+          toast.error('User not found. Please refresh the page')
+        }
+        setResponseData(data);
       } else {
-        setREsponseData(undefined)
+        setResponseData(undefined)
         setIsEditing(false)
         toast.success('Profile updated successfully')
       }
@@ -200,87 +212,6 @@ export default function DashboardProfile({
   )
 }
 
-
-
-
-
-// const { data: session, status, update } = useSession();
-// const [isEditing, setIsEditing] = useState(false);
-// const [responseData, setResponseData] = useState<
-//   ProfileFormState | undefined
-// >(undefined);
-// const [changingPassword, setChangingPassword] = useState(false);
-// const [formData, setFormData] = useState({
-//   name: user.name,
-//   lastName: user.lastName,
-//   email: user.email,
-//   password: user.password,
-//   oldPassword: undefined,
-//   newPassword: undefined,
-//   country: user.address?.country || undefined,
-//   city: user.address?.city,
-//   zipCode: user.address?.zipCode,
-//   streetLine1: user.address?.street?.address1,
-//   streetLine2: user.address?.street?.address2,
-// });
-
-
-
-
-// async function handleSubmit(e: any) {
-//   e.preventDefault();
-//   try {
-//     const res = await fetch(
-//       `${process.env.NEXT_PUBLIC_URL}/api/users/${user._id}`,
-//       {
-//         method: "PUT",
-//         body: JSON.stringify(formData),
-//       }
-//     );
-//     const data = await res.json();
-//     setResponseData(data);
-//     if (res.ok) {
-//       update();
-//       setIsEditing(false);
-//       toast.success(data.message);
-//     }
-//   } catch (error) {
-//     console.log("ERROR", error);
-//     toast.error("Something went wrong");
-//   }
-// }
-
-
-
-
-// function handleChange(e: any) {
-//   const { name, value } = e.target;
-//   setFormData({ ...formData, [name]: value });
-// }
-
-
-
-
-// function cancelEditing() {
-//   setFormData({
-//     name: user.name,
-//     lastName: user.lastName,
-//     email: user.email,
-//     password: user.password,
-//     oldPassword: undefined,
-//     newPassword: undefined,
-//     country: user.address?.country,
-//     city: user.address?.city,
-//     zipCode: user.address?.zipCode,
-//     streetLine1: user.address?.street?.address1,
-//     streetLine2: user.address?.street?.address2,
-//   });
-//   setResponseData(undefined);
-//   if (changingPassword) {
-//     setChangingPassword(false);
-//   }
-//   setIsEditing(!isEditing);
-// }
 
 
 
