@@ -3,8 +3,9 @@
 import UserInterface from "@/interfaces/user.interface";
 import { useEffect, useState } from "react";
 import { HydratedDocument } from "mongoose";
-import { ProfileFormState } from "@/schemas/validation";
-import { Toaster, toast } from "sonner";
+import { addressValidationState } from "@/schemas/validation/addressValidation";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 type Country = {
   value: string;
@@ -17,23 +18,18 @@ export default function DashboardAddress({
   user: HydratedDocument<UserInterface>;
 }) {
   const [countries, setCountries] = useState<Country[]>([]);
-  const [formData, setFormData] = useState({
-    name: user.name,
-    lastName: user.lastName,
-    email: user.email,
-    password: user.password,
-    oldPassword: undefined,
-    newPassword: undefined,
-    country: user.address?.country || undefined,
-    city: user.address?.city || "",
-    zipCode: user.address?.zipCode || "",
-    streetLine1: user.address?.street?.address1 || "",
-    streetLine2: user.address?.street?.address2 || "",
+  const [formFields, setFormFields] = useState({
+    country: user.address?.country,
+    city: user.address?.city,
+    zipCode: user.address?.zipCode,
+    streetLine1: user.address?.street?.address1,
+    streetLine2: user.address?.street?.address2,
   });
   const [responseData, setResponseData] = useState<
-    ProfileFormState | undefined
+    addressValidationState | undefined
   >(undefined);
   const [isEditing, setIsEditing] = useState(false);
+  const { data: session, status, update } = useSession()
 
   function removeEmoji(string: string) {
     return string
@@ -47,7 +43,7 @@ export default function DashboardAddress({
 
   function selectCountry(e: any) {
     const countryString = removeEmoji(e.target.value);
-    setFormData((prevData) => ({
+    setFormFields((prevData) => ({
       ...prevData,
       country: countryString,
     }));
@@ -64,18 +60,12 @@ export default function DashboardAddress({
   }, []);
 
   function cancelEditing() {
-    setFormData({
-      name: user.name,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password,
-      oldPassword: undefined,
-      newPassword: undefined,
+    setFormFields({
       country: user.address?.country,
-      city: user.address?.city || "",
-      zipCode: user.address?.zipCode || "",
-      streetLine1: user.address?.street?.address1 || "",
-      streetLine2: user.address?.street?.address2 || "",
+      city: user.address?.city,
+      zipCode: user.address?.zipCode,
+      streetLine1: user.address?.street?.address1,
+      streetLine2: user.address?.street?.address2,
     });
     setResponseData(undefined);
 
@@ -84,29 +74,34 @@ export default function DashboardAddress({
 
   function handleChange(e: any) {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormFields({ ...formFields, [name]: value });
   }
   async function handleSubmit(e: any) {
     e.preventDefault();
-    console.log(formData);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_URL}/api/users/${user._id}`,
         {
           method: "PUT",
-          body: JSON.stringify(formData),
+          body: JSON.stringify({ ...formFields, formSource: 'Address' }),
         }
       );
       const data = await res.json();
-      setResponseData(data);
-      if (res.ok) {
-        setIsEditing(false);
-        toast.success(data.message);
+      if (!res.ok) {
+        if (res.status === 404) {
+          toast.error('User not found. Please refresh the page')
+        }
+        setResponseData(data);
+      } else {
+        setResponseData(undefined)
+        setIsEditing(false)
+        toast.success('Profile updated successfully')
       }
-      console.log(data);
     } catch (error) {
       console.log("ERROR", error);
       toast.error("Something went wrong");
+    } finally {
+      update()
     }
   }
   return (
@@ -132,11 +127,11 @@ export default function DashboardAddress({
             id="country"
             className="bg-white w-[70%] "
             onChange={selectCountry}
-            value={`${formData.country
-                ? countries.find(
-                  (c) => removeEmoji(c.label) === formData.country
-                )?.label
-                : "--Select Country--"
+            value={`${formFields.country
+              ? countries.find(
+                (c) => removeEmoji(c.label) === formFields.country
+              )?.label
+              : "--Select Country--"
               }`}
             disabled={!isEditing}
           >
@@ -150,6 +145,11 @@ export default function DashboardAddress({
             ))}
           </select>
         </section>
+        {responseData?.errors?.country && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData.errors.country}
+          </p>
+        )}
         <section className="flex">
           <label htmlFor="city" className="w-[30%] text-sm">
             City:
@@ -159,7 +159,7 @@ export default function DashboardAddress({
             name="city"
             type="text"
             id="city"
-            value={formData.city}
+            value={formFields.city}
             className="border w-[70%]"
             placeholder="Rome"
             disabled={!isEditing}
@@ -178,7 +178,7 @@ export default function DashboardAddress({
             onChange={handleChange}
             type="string"
             id="zip"
-            value={formData.zipCode}
+            value={formFields.zipCode}
             className="border w-[70%]"
             autoComplete="off"
             placeholder="00100"
@@ -201,7 +201,7 @@ export default function DashboardAddress({
             id="streetLine1"
             name="streetLine1"
             className="border w-[70%]"
-            value={formData.streetLine1}
+            value={formFields.streetLine1}
             placeholder="Via Roma 1"
             disabled={!isEditing}
           />
@@ -222,7 +222,7 @@ export default function DashboardAddress({
             name="streetLine2"
             className="border w-[70%]"
             disabled={!isEditing}
-            value={formData.streetLine2}
+            value={formFields.streetLine2}
           />
         </section>
         {responseData?.errors?.streetLine2 && (
