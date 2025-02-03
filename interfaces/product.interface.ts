@@ -7,14 +7,9 @@ export default interface ProductInterface {
   price: number;
   images: string[];
   category: Types.ObjectId[];
-  genre: "men" | "women" | "unisex";
+  gender: "men" | "women" | "unisex";
   stock: number;
   rating: number;
-  specs?: {
-    height?: number;
-    width?: number;
-    depth?: number;
-  };
   discount?: number;
   isFeatured: boolean;
   views: number;
