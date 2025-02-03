@@ -4,42 +4,49 @@ export const productValidation = z.object({
   title: z
     .string()
     .min(2, { message: "Title must be at least 2 characters" })
-    .max(20, { message: "Title must be at most 15 characters" })
     .trim(),
   description: z
     .string()
     .min(2, { message: "Description must be at least 2 characters" })
-    .max(100, { message: "Description must be at most 15 characters" })
     .trim(),
   brand: z
     .string()
     .min(2, { message: "Brand must be at least 2 characters" })
-    .max(15, { message: "Brand must be at most 15 characters" })
     .trim(),
   category: z
     .string()
     .min(2, { message: "Category must be at least 2 characters" })
-    .max(15, { message: "Category must be at most 15 characters" })
     .trim(),
   price: z
-    .number()
-    .gt(0, { message: "Price must be greater than 0" })
-    .finite()
-    .positive(),
+    .string()
+    .trim()
+    .nonempty({ message: "Price is required" })
+    .transform((value) => Number(value)),
   gender: z.enum(["men", "women", "unisex"]),
   stock: z
-    .number()
-    .gt(0, { message: "Price must be greater than 0" })
-    .finite()
-    .positive(),
+    .string()
+    .trim()
+    .nonempty({ message: "Stock is required" })
+    .transform((value) => Number(value)),
   discount: z
-    .number()
-    .gt(0, { message: "Price must be greater than 0" })
-    .lte(100, { message: "Max discount applicable is 100" })
-    .finite()
-    .positive(),
-  isFeatured: z.boolean(),
-  isLive: z.boolean(),
+    .string()
+    .trim()
+    .optional()
+    .transform((value) => {
+      if (value === "") {
+        return 0;
+      } else {
+        return Number(value);
+      }
+    }),
+  isFeatured: z.enum(["true", "false"]).transform((value) => {
+    if (value === "true") return true;
+    if (value === "false") return false;
+  }),
+  isLive: z.enum(["true", "false"]).transform((value) => {
+    if (value === "true") return true;
+    if (value === "false") return false;
+  }),
 });
 
 export type productValidationState =
