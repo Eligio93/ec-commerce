@@ -1,21 +1,29 @@
 'use client'
 
 import ProductInterface from "@/interfaces/product.interface";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CategoryInterface from "@/interfaces/category.interface";
 import Image from "next/image";
-import { headers } from "next/headers";
+import { productValidationState } from "@/schemas/validation/productValidation";
+import Dropzone from "react-dropzone";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 
 type formProps = {
   product?: ProductInterface;
 };
 
+
 export default function ProductForm({ product }: formProps) {
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
-  const [files, setFiles] = useState<string[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false)
+  const [rejectedFiles, setRejectedFiles] = useState<any[]>([]);
+  const [responseData, setResponseData] = useState<productValidationState | undefined>(undefined);
+  const router = useRouter();
 
+  //fetch all categories
   useEffect(() => {
     async function getCategories() {
       const res = await fetch("http://localhost:3000/api/categories");
@@ -27,54 +35,84 @@ export default function ProductForm({ product }: formProps) {
 
 
   async function handleSubmit(e: any) {
+    setResponseData(undefined)
     e.preventDefault();
+    setLoading(true)
     const formData = new FormData(e.target);
-    const res = await fetch("http://localhost:3000/api/products", {
-      method: "POST",
-      body: formData,
-    },)
-    console.log('RES', res)
+    formData.set("isFeatured", e.target.isFeatured.checked ? 'true' : 'false');
+    formData.set("isLive", e.target.isLive.checked ? "true" : "false");
+    files.map((file) => {
+      formData.append('images', file)
+    })
+    try {
+      const res = await fetch("http://localhost:3000/api/products", {
+        method: product ? 'PUT' : 'POST',
+        body: formData,
+      },)
+      const data = await res.json();
+      setResponseData(data);
+      if (res.status === 400 || res.status === 404) {
+        toast.error(data.message)
+      }
+      if (res.status === 201) {
+        toast.success('Product created successfully')
+        router.push('/admin')
+      }
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+      toast.error('Something went wrong')
+      setLoading(false)
+    }
   }
 
-  function addPreview(e: any) {
-    if (e.target.files.length > 5) {
-      alert('You can only upload 5 images')
-      return
-    }
-    if (files.length >= 5) {
-      alert('You can only upload 5 images')
-      return
-    }
-    let filesArray: string[] = [...files];
-    if (!e.target.files) {
-      return
-    }
-    for (let i = 0; i < e.target.files.length; i++) {
-      filesArray.push(URL.createObjectURL(e.target.files[i]))
-    }
-    setFiles(filesArray)
-    return
+  //handle images upload
+  function handleFileSelection(acceptedFiles: any[], rejectedFiles: any[]) {
+    setRejectedFiles(rejectedFiles);//if true menas too many file uploaded
+    setFiles(acceptedFiles.map((file) => Object.assign(file, {
+      preview: URL.createObjectURL(file)
+    })))
   }
-  function removePreview(e: any, index: number) {
+
+  //remove file from uploading
+  function removeFileUpload(e: any, index: number) {
     const filesArray = files.filter((_, i) => i !== index)
     setFiles(filesArray);
-
   }
+
+  if (loading) return <p className="text-center">Loading</p>
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div className="flex flex-col">
         <label htmlFor="Title">Title*</label>
         <input className="border" type="text" id="title" name="title" />
+        {responseData?.errors?.title && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData?.errors?.title}
+          </p>
+        )}
       </div>
+
       <div className="flex flex-col">
         <label htmlFor="description">Description*</label>
-        <input className="border" type="text" id="description" name="description" />
+        <textarea className="border resize-none h-20" id="description" name="description" />
+        {responseData?.errors?.description && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData?.errors?.description}
+          </p>
+        )}
       </div>
       <div className="flex flex-col">
         <label htmlFor="brand">Brand*</label>
         <input className="border" type="text" id="brand" name="brand" />
+        {responseData?.errors?.brand && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData?.errors?.brand}
+          </p>
+        )}
       </div>
-      <div className="flex flex-col">{/**QUi ci sara un select per le categorie */}
+      <div className="flex flex-col">
         <label htmlFor="category">Category*</label>
 
         <select name="category" id="category">
@@ -82,26 +120,51 @@ export default function ProductForm({ product }: formProps) {
             <option key={category.name} value={category.name}>{category.name}</option>
           ))}
         </select>
+        {responseData?.errors?.category && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData?.errors?.category}
+          </p>
+        )}
       </div>
       <div className="flex flex-col">
         <label htmlFor="price">Price*</label>
-        <input className="border" type="number" id="price" name="price" />
+        <input className="border" type='number' id="price" name="price" step=".01" />
+        {responseData?.errors?.price && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData?.errors?.price}
+          </p>
+        )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="genre">Gender:</label>
-        <select name="genre" id="genre">
+        <label htmlFor="gender">Gender:</label>
+        <select name="gender" id="gender">
           <option value="men">Men</option>
           <option value="women">Women</option>
           <option value="unisex">Unisex</option>
         </select>
+        {responseData?.errors?.gender && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData?.errors?.gender}
+          </p>
+        )}
       </div>
       <div className="flex flex-col">
         <label htmlFor="stock">Stock*</label>
         <input className="border" type="number" id="stock" name="stock" />
+        {responseData?.errors?.stock && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData?.errors?.stock}
+          </p>
+        )}
       </div>
       <div className="flex flex-col">
         <label htmlFor="discount">Discount(%):</label>
         <input className="border" type="number" id="discount" name="discount" />
+        {responseData?.errors?.discount && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            {responseData?.errors?.discount}
+          </p>
+        )}
       </div>
       <div className="flex flex-col">
         <label htmlFor="isFeatured">Feature it?</label>
@@ -112,44 +175,33 @@ export default function ProductForm({ product }: formProps) {
         <input className="border" type="checkbox" id="isLive" name="isLive" />
       </div>
       <div className="flex flex-col">
-        <label htmlFor="files">Images</label>
         {files.length > 0 && <div className='flex flex-wrap gap-3 justify-center p-2'>
           {files.map((file, index) => (
-            <div className=' relative h-[150px] w-2/3' key={index}>
-              <Image className='object-cover' src={file} alt={file} fill />
-              <button type="button" onClick={(e) => removePreview(e, index)} className="absolute w-6 h-6 top-0 right-0 rounded-full translate-x-1/3 -translate-y-1/3 bg-red-500 text-white text-center font-bold shadow-lg">x</button>
+            <div className=' relative h-[150px] w-2/3' key={file.name}>
+              <Image className='object-cover' src={file.preview} alt={file} fill />
+              <button type="button" onClick={(e) => removeFileUpload(e, index)} className="absolute w-6 h-6 top-0 right-0 rounded-full translate-x-1/3 -translate-y-1/3 bg-red-500 text-white text-center font-bold shadow-lg">x</button>
             </div>
 
           ))}
         </div>}
-
-        <input className='text-white' type="file" id="files" name="file" multiple onChange={addPreview} ref={fileInputRef} />
-
+        <Dropzone maxFiles={5} onDrop={(acceptedFiles, rejectedFiles) => handleFileSelection(acceptedFiles, rejectedFiles)}>
+          {({ getRootProps, getInputProps }) => (
+            <section>
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <p className="lg:hidden">Touch here to select files</p>
+                <p className="hidden lg:block">Drag 'n' drop some files here, or click to select files</p>
+              </div>
+            </section>
+          )}
+        </Dropzone>
+        {rejectedFiles.length > 0 && (
+          <p className="self-end w-[60%] text-sm text-red-500">
+            You can upload max 5 images, Try again
+          </p>
+        )}
       </div>
-
-
       <button type="submit">Submit</button>
     </form>
   );
 }
-
-// const ProductSchema = new Schema<ProductInterface>({
-//     name: { type: String, required: true },
-//     description: { type: String, required: true },
-//     brand: { type: String, required: true },
-//     price: { type: Number, required: true },
-//     images: [{ type: String, required: true }],
-//     category: [{ type: Schema.Types.ObjectId, ref: "Category", required: true }],
-//     genre: { type: String, required: true },
-//     stock: { type: Number, required: true },
-//     rating: { type: Number, required: true, max: 5 },
-//     specs: {
-//       height: Number,
-//       width: Number,
-//       depth: Number,
-//     },
-//     discount: { type: Number },
-//     isFeatured: { type: Boolean, required: true },
-//     views: { type: Number, required: true },
-//     isLive: { type: Boolean, required: true },
-//   })
