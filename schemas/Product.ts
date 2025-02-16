@@ -8,7 +8,7 @@ const ProductSchema = new Schema<ProductInterface>({
   brand: { type: String, required: true },
   price: { type: Number, required: true },
   images: [{ type: String, required: true }],
-  category: [{ type: Schema.Types.ObjectId, ref: "Category", required: true }],
+  category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
   gender: { type: String, required: true },
   stock: { type: Number, required: true },
   rating: { type: Number, required: true, max: 5 },
