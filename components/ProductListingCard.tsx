@@ -5,26 +5,28 @@ import Image from "next/image";
 import AddToCartBtn from "./Products/AddToCartBtn";
 import Link from "next/link";
 import calculateDiscountedPrice from "@/utils/calculateDiscountedPrice";
+import Category from "@/schemas/Category";
 
 
 
 
 
-export default function ProductListingCard({ product }: { product: HydratedDocument<ProductInterface & { category: CategoryInterface }> }) {
-    console.log('PRODUCT', product)
+export default async function ProductListingCard({ product }: { product: HydratedDocument<ProductInterface & { category: CategoryInterface }> }) {
+    const category = await Category.findById(product.category) as HydratedDocument<CategoryInterface>
+    product.category = category
 
     return (
         <Link href={`/products/${product._id}`}
             className="bg-white rounded-lg p-2 flex flex-col gap-2 lg:gap-5 lg:p-3 border min-w-[100px]">
-            <div className=" group relative w-full h-[120px] sm:h-[150px] lg:h-[200px]">
+            <div className=" group relative w-full h-[120px] sm:h-[150px] lg:h-[200px] ">
                 <Image
-                    className={`object-contain  ${product.images[1] && 'group-hover:hidden'}`}
+                    className={`object-contain  ${product.images[1] && 'group-hover:opacity-0 transition-opacity duration-300'}`}
                     src={product.images[0]}
                     alt={product.name + " image"}
                     fill
                 />
                 {product.images[1] && <Image
-                    className="hidden group-hover:block object-contain"
+                    className="opacity-0 group-hover:opacity-100 object-contain transition-opacity duration-300"
                     src={product.images[1]}
                     alt={product.name + " image"}
                     fill
