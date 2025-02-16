@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import CategoryInterface from "./category.interface";
 
 export default interface ProductInterface {
   name: string;
@@ -6,7 +7,7 @@ export default interface ProductInterface {
   brand: string;
   price: number;
   images: string[];
-  category: Types.ObjectId[];
+  category: Types.ObjectId | CategoryInterface;
   gender: "men" | "women" | "unisex";
   stock: number;
   rating: number;
