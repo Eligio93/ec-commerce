@@ -5,7 +5,7 @@ import Product from "@/schemas/Product";
 import ProductInterface from "@/interfaces/product.interface";
 import { HydratedDocument } from "mongoose";
 import Category from "@/schemas/Category";
-
+//Creates a new product
 export async function POST(req: Request) {
   const data = await req.formData();
   const dataObject = Object.fromEntries(data);
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
       category: category,
       gender: validatedProduct.data.gender,
       stock: validatedProduct.data.stock,
-      rating: 0,
+      rating: [0],
       discount: validatedProduct.data.discount,
       isFeatured: validatedProduct.data.isFeatured,
       views: 0,
