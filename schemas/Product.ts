@@ -11,7 +11,7 @@ const ProductSchema = new Schema<ProductInterface>({
   category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
   gender: { type: String, required: true },
   stock: { type: Number, required: true },
-  rating: { type: Number, required: true, max: 5 },
+  rating: [{ type: Number, required: true, max: 5 }],
   discount: { type: Number },
   isFeatured: { type: Boolean, required: true },
   views: { type: Number, required: true },

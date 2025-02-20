@@ -10,7 +10,7 @@ export default interface ProductInterface {
   category: Types.ObjectId | CategoryInterface;
   gender: "men" | "women" | "unisex";
   stock: number;
-  rating: number;
+  rating: number[];
   discount?: number;
   isFeatured: boolean;
   views: number;
