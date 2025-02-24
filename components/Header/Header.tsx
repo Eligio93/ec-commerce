@@ -1,7 +1,7 @@
 "use client";
 import Navbar from "./Navbar";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import profileIcon from "@/public/profileIcon.svg";
@@ -9,7 +9,9 @@ import cartIcon from "@/public/cartIcon.svg";
 import hamburgerIcon from "@/public/hamburgerIcon.svg";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { cartContext, CartProduct } from "@/config/CartProvider";
 export default function Header() {
+  const { cartProducts } = useContext(cartContext);
   const [openMenu, setOpenMenu] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [openUser, setOpenUser] = useState(false);
@@ -63,7 +65,9 @@ export default function Header() {
           <Image src={cartIcon} alt="cartIcon" />
         </div>
         {openCart && (
-          <div className="absolute z-10 right-0 top-full bg-white border w-3/4 h-[calc(100vh-64px)]"></div>
+          <div className="absolute z-10 right-0 top-full bg-white border w-3/4 h-[calc(100vh-64px)]">
+            {cartProducts.length <= 0 ? <p>The cart is empty</p> : cartProducts.map((product: CartProduct) => <p key={product.product.name}>{product.product.name}</p>)}
+          </div>
         )}
         {/*Profile*/}
         <div
