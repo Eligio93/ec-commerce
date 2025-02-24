@@ -3,18 +3,19 @@ import Product from "@/schemas/Product";
 import ProductInterface from "@/interfaces/product.interface";
 import { HydratedDocument } from "mongoose";
 import ProductListingCard from "@/components/ProductListingCard";
-import CategoryInterface from "@/interfaces/category.interface";
+
 import newArrivalsbg from "@/public/newArrivalsbg.jpg"
 import Image from "next/image";
 import Link from "next/link";
 
+
 export default async function NewArrivals() {
   await connectDB();
-  const newArrivals: HydratedDocument<ProductInterface & { category: CategoryInterface }>[] = await Product.find({ isLive: true })
+  const newArrivals: HydratedDocument<ProductInterface>[] = await Product.find({ isLive: true })
     .sort({ _id: -1 })
     .limit(6)
-    .populate("category");
-  console.log('NEW ARRIVALS', newArrivals)
+    .populate('category')
+
   return <section className="flex flex-col gap-5">
     <h1 className="text-center">New Arrivals</h1>
 
@@ -27,7 +28,7 @@ export default async function NewArrivals() {
           priority
           className="rounded-lg object-cover h-full w-full"
         />
-        <Link href={'/products'} className=" bg-orange-500 absolute w-3/4 bottom-1/2 text-center p-1 rounded-full translate-y-1/2 hover:bg-orange-800 hover:text-white font-bold">
+        <Link href={'/products'} className="transition-colors duration-200 bg-orange-500 absolute w-3/4 bottom-1/2 text-center p-1 rounded-full translate-y-1/2 hover:bg-orange-800 hover:text-white font-bold">
           View All
         </Link>
       </div>
