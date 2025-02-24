@@ -23,7 +23,7 @@ export default function Hero() {
             className="rounded-lg"
           />
           <Link
-            className="absolute bottom-6 left-3 rounded-full bg-orange-400 px-3 py-1 font-bold"
+            className="absolute bottom-6 left-3 rounded-lg bg-orange-400 lg:p-3 p-2 font-bold transition-colors duration-200  hover:bg-orange-800 hover:text-white"
             href={"/products/men"}
           >
             Explore Men
@@ -37,7 +37,7 @@ export default function Hero() {
             priority
           />
           <Link
-            className="absolute bottom-6 left-3 rounded-full bg-orange-400 px-3 py-1 font-bold"
+            className="absolute bottom-6 left-3 rounded-lg bg-orange-400 lg:p-3 p-2 font-bold transition-colors duration-200  hover:bg-orange-800 hover:text-white"
             href={"/products/men"}
           >
             Explore Women
