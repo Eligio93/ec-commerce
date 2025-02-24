@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import CategoryInterface from "./category.interface";
+import { HydratedDocument } from "mongoose";
 
 export default interface ProductInterface {
   name: string;
@@ -7,7 +8,7 @@ export default interface ProductInterface {
   brand: string;
   price: number;
   images: string[];
-  category: Types.ObjectId | CategoryInterface;
+  category: HydratedDocument<CategoryInterface> ;
   gender: "men" | "women" | "unisex";
   stock: number;
   rating: number[];
