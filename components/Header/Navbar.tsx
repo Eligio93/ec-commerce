@@ -1,26 +1,46 @@
 import Link from "next/link";
-// interface NavbarProps {
-//   openMenu: boolean;
-// }
+import { motion } from "motion/react"
 
-export default function Navbar({ openMenu }: { openMenu: boolean }) {
+export default function Navbar({ openMenu, reference }: { openMenu: boolean, reference: React.RefObject<HTMLDivElement> }) {
   return (
-    <nav
-      className={`z-10 bg-white ${
-        openMenu ? "block" : "hidden"
-      }    absolute top-16 left-0 border border-orange-300 w-full p-3 lg:flex lg:static lg:border-none lg:flex-1 lg:p-0 `}
-    >
-      <ul className="lg:flex lg:justify-between lg:w-full items-center">
-        <li>
-          <Link href={"/"}>Home</Link>
-        </li>
-        <li>
-          <Link href={"/categories"}>Categories</Link>
-        </li>
-        <li>
-          <Link href={"/products"}>All Products</Link>
-        </li>
-      </ul>
-    </nav>
-  );
+    <>
+      <nav className='hidden lg:flex lg:flex-1 lg:p-0 lg:static lg:border-none '>
+        <ul className="lg:flex lg:justify-between lg:w-full items-center gap-5">
+          <li>
+            <Link href={"/"}>Home</Link>
+          </li>
+          <li>
+            <Link href={"/categories"}>Categories</Link>
+          </li>
+          <li>
+            <Link href={"/products"}>All Products</Link>
+          </li>
+        </ul>
+      </nav>
+      {/*mobile menu*/}
+      {openMenu && <motion.nav
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0 }}
+        className={`absolute top-16 left-0 bg-white w-full p-3 lg:hidden`}
+        ref={reference}
+      >
+        {/* <ul className="lg:flex lg:justify-between lg:w-full items-center"> */}
+        <ul className="flex flex-col gap-10">
+          <li>
+            <Link href={"/"}>Home</Link>
+          </li>
+          <li>
+            <Link href={"/categories"}>Categories</Link>
+          </li>
+          <li>
+            <Link href={"/products"}>All Products</Link>
+          </li>
+        </ul>
+      </motion.nav>}
+
+    </>
+  )
+
 }
+
