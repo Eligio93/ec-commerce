@@ -13,7 +13,9 @@ import { cartContext } from "@/config/CartProvider";
 import Cart from "../Cart/Cart";
 import { AnimatePresence } from "motion/react";
 import { motion } from 'motion/react'
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, LockClosedIcon, ArrowRightStartOnRectangleIcon, UserPlusIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { BriefcaseIcon } from "@heroicons/react/24/outline";
+
 
 
 export default function Header() {
@@ -133,32 +135,53 @@ export default function Header() {
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
-              className="absolute z-10 right-0 top-full bg-white border"
+              className="absolute z-10 right-0 top-full bg-white w-[200px] rounded-lg"
               ref={userRef}
 
             >
               <nav >
                 {status === "authenticated" && (
-                  <ul className="flex flex-col">
-                    <li>
-                      <Link href={"/dashboard"}>Dashboard</Link>
+                  <ul className="flex flex-col *:p-2  *:rounded-lg" >
+
+                    <li className=" hover:bg-gray-100" >
+                      <Link className="flex items-center gap-2" href={"/dashboard"}>
+                        <BriefcaseIcon className="size-5" />
+                        Dashboard
+                      </Link>
                     </li>
+
                     {session?.user.isAdmin && (
-                      <li>
-                        <Link href={"/admin"}>Admin</Link>
+                      <li className=" hover:bg-gray-100" >
+                        <Link className="flex items-center gap-2" href={"/admin"}>
+                          <LockClosedIcon className="size-5" />
+                          Admin
+                        </Link>
                       </li>
                     )}
-                    <li>
-                      <button onClick={async () => await signOut()}>
+                    <li className=" hover:bg-gray-100" >
+
+                      <button className="flex items-center gap-2 w-full" onClick={async () => await signOut()}>
+                        <ArrowRightStartOnRectangleIcon className="size-5" />
                         Logout
                       </button>
                     </li>
                   </ul>
                 )}
                 {status === "unauthenticated" && (
-                  <ul className="flex flex-col">
-                    <Link href={"/login"}>Login</Link>
-                    <Link href={"/register"}>Create a new Account</Link>
+                  <ul className="flex flex-col *:p-2  *:rounded-lg" >
+                    <li className=" hover:bg-gray-100">
+                      <Link className="flex items-center gap-2" href={"/login"}>
+                        <KeyIcon className="size-5" />
+                        Login
+                      </Link>
+                    </li>
+                    <li className=" hover:bg-gray-100" >
+                      <Link className="flex items-center gap-2" href={"/register"}>
+                        <UserPlusIcon className="size-5" />
+                        Create a new Account
+                      </Link>
+                    </li>
+
                   </ul>
                 )}
               </nav>
