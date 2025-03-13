@@ -135,13 +135,13 @@ export default function Header() {
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
-              className="absolute z-10 right-0 top-full bg-white w-[200px] rounded-lg"
+              className="absolute z-10 right-0 top-full bg-white w-[200px] rounded-lg border-2 border-orange-800"
               ref={userRef}
 
             >
               <nav >
                 {status === "authenticated" && (
-                  <ul className="flex flex-col *:p-2  *:rounded-lg" >
+                  <ul className="flex flex-col *:p-3  *:rounded-lg *:border-b" >
 
                     <li className=" hover:bg-gray-100" >
                       <Link className="flex items-center gap-2" href={"/dashboard"}>
@@ -149,6 +149,7 @@ export default function Header() {
                         Dashboard
                       </Link>
                     </li>
+
 
                     {session?.user.isAdmin && (
                       <li className=" hover:bg-gray-100" >
@@ -158,6 +159,7 @@ export default function Header() {
                         </Link>
                       </li>
                     )}
+
                     <li className=" hover:bg-gray-100" >
 
                       <button className="flex items-center gap-2 w-full" onClick={async () => await signOut()}>
@@ -168,7 +170,7 @@ export default function Header() {
                   </ul>
                 )}
                 {status === "unauthenticated" && (
-                  <ul className="flex flex-col *:p-2  *:rounded-lg" >
+                  <ul className="flex flex-col *:p-3  *:rounded-lg" >
                     <li className=" hover:bg-gray-100">
                       <Link className="flex items-center gap-2" href={"/login"}>
                         <KeyIcon className="size-5" />
