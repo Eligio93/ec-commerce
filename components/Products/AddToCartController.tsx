@@ -25,7 +25,7 @@ export default function AddToCartController(product: HydratedDocument<ProductInt
     if (existingCartProduct) {
         return <CartControllerBar existingCartProduct={existingCartProduct} />
     } else {
-        return <button onClick={() => addToCart(product)} className="transition-colors duration-200 text-sm sm:text-base py-1 lg:py-3 bg-orange-300 rounded-lg font-bold hover:bg-orange-800 hover:text-white z-index-100">
+        return <button onClick={() => addToCart(product)} className="transition-colors duration-200 text-base sm:text-md py-2 lg:py-3 bg-orange-300 rounded-lg font-bold hover:bg-orange-800 hover:text-white z-index-100">
             Add to Cart
         </button>;
     }
