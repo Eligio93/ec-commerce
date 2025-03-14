@@ -1,5 +1,5 @@
 'use client'
-import { ChevronUpIcon } from "@heroicons/react/24/outline"
+import { ChevronUpIcon,ShoppingCartIcon,RocketLaunchIcon,ShoppingBagIcon } from "@heroicons/react/24/outline"
 import { useState } from "react"
 
 export default function InfoProductListing({ description }: { description: string }) {
@@ -20,27 +20,42 @@ export default function InfoProductListing({ description }: { description: strin
                     <div className='flex flex-col  border p-2 bg-white rounded-lg' >
                         <div className={`flex justify-between items-center`} onClick={() => toggleInfo(0)}>
                             <p className="font-bold text-orange-800">Description</p>
-                            <ChevronUpIcon className={`stroke-orange-800 size-4 ${isOpen === 0 ? 'rotate-180' : ''} transition-all duration-1000`} />
+                            <ChevronUpIcon className={`stroke-orange-800 size-5 ${isOpen === 0 ? 'rotate-180' : ''} transition-all duration-500`} />
                         </div>
-                        <p className={`transition-all  duration-1000 max-h-0 overflow-hidden opacity-0 ${isOpen === 0 ? 'max-h-[700px] opacity-100 mt-2' : ''}`}>{description}</p>
+                        <p className={`transition-all  duration-500 max-h-0 overflow-hidden opacity-0 ${isOpen === 0 ? 'max-h-[700px] opacity-100 mt-2' : ''}`}>{description}</p>
                     </div>
                 </li>
                 <li>
                     <div className='flex flex-col  border p-2 bg-white rounded-lg' >
                         <div className="flex justify-between items-center" onClick={() => toggleInfo(1)}>
                             <p className="font-bold text-orange-800" >Delivery</p>
-                            <ChevronUpIcon className={`stroke-orange-800 size-4 ${isOpen === 0 ? 'rotate-180' : ''} transition-all duration-1000`} />
+                            <ChevronUpIcon className={`stroke-orange-800 size-5 ${isOpen === 1 ? 'rotate-180' : ''} transition-all duration-500`} />
                         </div>
-                        <p className={`transition-all  duration-1000 max-h-0 overflow-hidden opacity-0 ${isOpen === 1 ? 'max-h-[700px] opacity-100 mt-2' : ''}`}>{description}</p>
+                        <div className={`transition-all  duration-500 max-h-0 overflow-hidden opacity-0 ${isOpen === 1 ? 'max-h-[700px] opacity-100 mt-2' : ''}`}>
+                            <ul className="flex flex-col gap-3">
+                                <li className="flex items-center gap-2 pl-2">
+                                    <ShoppingCartIcon className="size-4"/>
+                                    <p>FREE Standard Delivery Over $20</p>
+                                </li>
+                                <li className="flex items-center gap-2 pl-2">
+                                    <RocketLaunchIcon className="size-4" />
+                                    <p>$5.99 EXPRESS Next Day Delivery</p>
+                                </li>
+                                <li className="flex items-center gap-2 pl-2">
+                                    <ShoppingBagIcon className="size-4" />
+                                    <p>FREE Customer Pick-Up</p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </li>
                 <li>
                     <div className='flex flex-col  border p-2 bg-white rounded-lg' >
-                        <div className={`flex justify-between items-center`} onClick={() => toggleInfo(3)}>
+                        <div className={`flex justify-between items-center`} onClick={() => toggleInfo(2)}>
                             <p className="font-bold text-orange-800">Payments</p>
-                            <ChevronUpIcon className={`stroke-orange-800 size-4 ${isOpen === 0 ? 'rotate-180' : ''} transition-all duration-1000`} />
+                            <ChevronUpIcon className={`stroke-orange-800 size-5 ${isOpen === 2 ? 'rotate-180' : ''} transition-all duration-500`} />
                         </div>
-                        <p className={`transition-all  duration-1000 max-h-0 overflow-hidden opacity-0 ${isOpen === 3 ? 'max-h-[700px] opacity-100 mt-2' : ''}`}>{description}</p>
+                        <p className={`transition-all  duration-500 max-h-0 overflow-hidden opacity-0 ${isOpen === 2 ? 'max-h-[700px] opacity-100 mt-2' : ''}`}>{description}</p>
 
                     </div>
                 </li>
