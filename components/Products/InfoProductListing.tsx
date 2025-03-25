@@ -43,7 +43,7 @@ export default function InfoProductListing({ description }: { description: strin
 
     return (
         <div >
-            <ul className="flex flex-col gap-1 ">
+            <ul className="flex flex-col gap-1 *:cursor-pointer">
                 <h2 className="text-xl font-bold mb-4">Information</h2>
                 <li className="lg:hidden">
                     <div className='flex flex-col  border p-2 bg-white rounded-lg' >
@@ -57,7 +57,7 @@ export default function InfoProductListing({ description }: { description: strin
                 <li>
                     <div className='flex flex-col  border p-2 bg-white rounded-lg' >
                         <div className="flex justify-between items-center" onClick={() => toggleInfo(1)}>
-                            <p className="font-bold text-orange-800" >Delivery</p>
+                            <p className="font-bold text-orange-800" >Shipping Info</p>
                             <ChevronUpIcon className={`stroke-orange-800 size-5 ${isOpen === 1 ? 'rotate-180' : ''} transition-all duration-500`} />
                         </div>
                         <div className={`transition-all  duration-500 max-h-0 overflow-hidden opacity-0 ${isOpen === 1 ? 'max-h-[700px] opacity-100 mt-2' : ''}`}>
@@ -84,10 +84,10 @@ export default function InfoProductListing({ description }: { description: strin
                             <p className="font-bold text-orange-800">Supported Payments</p>
                             <ChevronUpIcon className={`stroke-orange-800 size-5 ${isOpen === 2 ? 'rotate-180' : ''} transition-all duration-500`} />
                         </div>
-                        <div className={`transition-all flex flex-wrap gap-3 justify-evenly duration-500 max-h-0 overflow-hidden opacity-0 ${isOpen === 2 ? 'max-h-[700px] opacity-100 mt-2' : ''}`}>
-                            {paymentsMethod.map((payment, index) => <div  key={index} className="flex flex-col items-center gap-2">
-                                <Image src={payment.icon} title={payment.name} alt={payment.name} className="size-10 md:size-12 lg:size-16" />
-                                <p className="hidden lg:block">{payment.name}</p>
+                        <div className={`transition-all flex flex-wrap gap-3 justify-evenly duration-500 max-h-0 overflow-hidden opacity-0 ${isOpen === 2 ? 'max-h-[700px] opacity-100 mt-2 lg:p-3' : ''} `}>
+                            {paymentsMethod.map((payment, index) => <div key={index} className="flex flex-col items-center gap-2">
+                                <Image src={payment.icon} title={payment.name} alt={payment.name} className="size-10 md:size-12 lg:size-13" />
+                                <p className="hidden lg:block lg:text-sm">{payment.name}</p>
                             </div>)}
                         </div>
                     </div>
