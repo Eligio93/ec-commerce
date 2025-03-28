@@ -1,23 +1,24 @@
 'use client'
 
 import ProductInterface from "@/interfaces/product.interface";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import CategoryInterface from "@/interfaces/category.interface";
 import Image from "next/image";
 import { productValidationState } from "@/schemas/validation/productValidation";
 import Dropzone from "react-dropzone";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { HydratedDocument } from "mongoose";
 
 
 type formProps = {
-  product?: ProductInterface;
+  product?: HydratedDocument<ProductInterface>;
 };
 
 
 export default function ProductForm({ product }: formProps) {
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
-  const [files, setFiles] = useState<any[]>([]);
+  const [files, setFiles] = useState<any[]>(product?.images || []);
   const [loading, setLoading] = useState(false)
   const [rejectedFiles, setRejectedFiles] = useState<any[]>([]);
   const [responseData, setResponseData] = useState<productValidationState | undefined>(undefined);
@@ -45,7 +46,7 @@ export default function ProductForm({ product }: formProps) {
       formData.append('images', file)
     })
     try {
-      const res = await fetch("http://localhost:3000/api/products", {
+      const res = await fetch(`http://localhost:3000/api/products${product ? `/${product._id}` : ''}`, {
         method: product ? 'PUT' : 'POST',
         body: formData,
       },)
@@ -83,10 +84,10 @@ export default function ProductForm({ product }: formProps) {
   if (loading) return <p className="text-center">Loading</p>
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="[&_input]:rounded-lg  flex flex-col gap-5 w-full p-2  sm:p-3 rounded-lg">
       <div className="flex flex-col">
         <label htmlFor="Title">Title*</label>
-        <input className="border" type="text" id="title" name="title" />
+        <input type="text" id="title" name="title" defaultValue={product?.name || ''} />
         {responseData?.errors?.title && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.title}
@@ -96,7 +97,7 @@ export default function ProductForm({ product }: formProps) {
 
       <div className="flex flex-col">
         <label htmlFor="description">Description*</label>
-        <textarea className="border resize-none h-20" id="description" name="description" />
+        <textarea className="border resize-none h-20" id="description" name="description" defaultValue={product?.description || ''} />
         {responseData?.errors?.description && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.description}
@@ -105,7 +106,7 @@ export default function ProductForm({ product }: formProps) {
       </div>
       <div className="flex flex-col">
         <label htmlFor="brand">Brand*</label>
-        <input className="border" type="text" id="brand" name="brand" />
+        <input className="border" type="text" id="brand" name="brand" defaultValue={product?.brand || ''} />
         {responseData?.errors?.brand && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.brand}
@@ -114,12 +115,12 @@ export default function ProductForm({ product }: formProps) {
       </div>
       <div className="flex flex-col">
         <label htmlFor="category">Category*</label>
-
-        <select name="category" id="category">
-          {categories.map((category: CategoryInterface) => (
-            <option key={category.name} value={category.name}>{category.name}</option>
-          ))}
-        </select>
+        {categories.length > 0 &&
+          <select name="category" id="category" defaultValue={product?.category.name || ''}  >
+            {categories.map((category: CategoryInterface) => (
+              <option key={category.name} value={category.name}>{category.name}</option>
+            ))}
+          </select>}
         {responseData?.errors?.category && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.category}
@@ -128,7 +129,7 @@ export default function ProductForm({ product }: formProps) {
       </div>
       <div className="flex flex-col">
         <label htmlFor="price">Price*</label>
-        <input className="border" type='number' id="price" name="price" step=".01" />
+        <input className="border" type='number' id="price" name="price" step=".01" defaultValue={product?.price || ''} />
         {responseData?.errors?.price && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.price}
@@ -137,7 +138,7 @@ export default function ProductForm({ product }: formProps) {
       </div>
       <div className="flex flex-col">
         <label htmlFor="gender">Gender:</label>
-        <select name="gender" id="gender">
+        <select name="gender" id="gender" defaultValue={product?.gender || ''}>
           <option value="men">Men</option>
           <option value="women">Women</option>
           <option value="unisex">Unisex</option>
@@ -150,7 +151,7 @@ export default function ProductForm({ product }: formProps) {
       </div>
       <div className="flex flex-col">
         <label htmlFor="stock">Stock*</label>
-        <input className="border" type="number" id="stock" name="stock" />
+        <input className="border" type="number" id="stock" name="stock" defaultValue={product?.stock || ''} />
         {responseData?.errors?.stock && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.stock}
@@ -159,7 +160,7 @@ export default function ProductForm({ product }: formProps) {
       </div>
       <div className="flex flex-col">
         <label htmlFor="discount">Discount(%):</label>
-        <input className="border" type="number" id="discount" name="discount" />
+        <input className="border" type="number" id="discount" name="discount" defaultValue={product?.discount || 0} />
         {responseData?.errors?.discount && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.discount}
@@ -168,17 +169,17 @@ export default function ProductForm({ product }: formProps) {
       </div>
       <div className="flex flex-col">
         <label htmlFor="isFeatured">Feature it?</label>
-        <input className="border" type="checkbox" id="isFeatured" name="isFeatured" />
+        <input className="border" type="checkbox" id="isFeatured" name="isFeatured" defaultChecked={product?.isFeatured || false} />
       </div>
       <div className="flex flex-col">
         <label htmlFor="isLive">Live it?</label>
-        <input className="border" type="checkbox" id="isLive" name="isLive" />
+        <input className="border" type="checkbox" id="isLive" name="isLive" defaultChecked={product?.isLive || false} />
       </div>
       <div className="flex flex-col">
         {files.length > 0 && <div className='flex flex-wrap gap-3 justify-center p-2'>
           {files.map((file, index) => (
-            <div className=' relative h-[150px] w-2/3' key={file.name}>
-              <Image className='object-cover' src={file.preview} alt={file} fill />
+            <div className=' relative h-[150px] w-2/3' key={file.name || index}>
+              <Image className='object-cover' src={file.preview || file} alt={file} fill />
               <button type="button" onClick={(e) => removeFileUpload(e, index)} className="absolute w-6 h-6 top-0 right-0 rounded-full translate-x-1/3 -translate-y-1/3 bg-red-500 text-white text-center font-bold shadow-lg">x</button>
             </div>
 
@@ -201,7 +202,7 @@ export default function ProductForm({ product }: formProps) {
           </p>
         )}
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit">{product ? "Update" : "Submit"}</button>
     </form>
   );
 }
