@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ClipboardDocumentListIcon, DocumentPlusIcon, FolderPlusIcon } from "@heroicons/react/24/outline";
+import { ClipboardDocumentListIcon, DocumentPlusIcon, FolderPlusIcon, FolderOpenIcon } from "@heroicons/react/24/outline";
 
 export default function AdminLayout({
     children,
@@ -14,6 +14,10 @@ export default function AdminLayout({
                 <Link className="flex flex-col gap-2 items-center" href="/admin">
                     <ClipboardDocumentListIcon className="size-7" />
                     <p className='text-xs'>Inventory</p>
+                </Link>
+                <Link className="flex flex-col gap-2 items-center" href="/admin">
+                    <FolderOpenIcon className="size-7" />
+                    <p className='text-xs'>Categories</p>
                 </Link>
                 <Link className="flex flex-col gap-2 items-center" href="/admin/newProduct">
                     <DocumentPlusIcon className="size-7" />
