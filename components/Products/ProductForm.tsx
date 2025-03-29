@@ -83,11 +83,12 @@ export default function ProductForm({ product }: formProps) {
 
   if (loading) return <p className="text-center">Loading</p>
 
-  return (
-    <form onSubmit={handleSubmit} className="[&_input]:rounded-lg  flex flex-col gap-5 w-full p-2  sm:p-3 rounded-lg">
+  return (<div className="flex flex-col gap-2 w-full ">
+    <h1 className="text-xl px-3 py-1 bg-orange-800 text-white rounded-lg">{product ? 'Edit Product' : 'New Product'}</h1>
+    <form onSubmit={handleSubmit} className="[&_input]:rounded-lg [&_input]:border-orange-300 [&_input]:px-1  flex flex-col gap-5 p-2  sm:p-3 border-l border-orange-800 bg-white sm:rounded-lg shadow-lg">
       <div className="flex flex-col">
-        <label htmlFor="Title">Title*</label>
-        <input type="text" id="title" name="title" defaultValue={product?.name || ''} />
+        <label className="px-1" htmlFor="Title">Title*</label>
+        <input className="py-1 border-orange-300 border" type="text" id="title" name="title" defaultValue={product?.name || ''} />
         {responseData?.errors?.title && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.title}
@@ -96,8 +97,8 @@ export default function ProductForm({ product }: formProps) {
       </div>
 
       <div className="flex flex-col">
-        <label htmlFor="description">Description*</label>
-        <textarea className="border resize-none h-20" id="description" name="description" defaultValue={product?.description || ''} />
+        <label className="px-1" htmlFor="description">Description*</label>
+        <textarea className="border px-1 py-1 rounded-lg border-orange-300 resize-none h-20 sm:h-36 lg:min-h-64" id="description" name="description" defaultValue={product?.description || ''} />
         {responseData?.errors?.description && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.description}
@@ -105,8 +106,8 @@ export default function ProductForm({ product }: formProps) {
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="brand">Brand*</label>
-        <input className="border" type="text" id="brand" name="brand" defaultValue={product?.brand || ''} />
+        <label className="px-1" htmlFor="brand">Brand*</label>
+        <input className="py-1 border" type="text" id="brand" name="brand" defaultValue={product?.brand || ''} />
         {responseData?.errors?.brand && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.brand}
@@ -114,9 +115,9 @@ export default function ProductForm({ product }: formProps) {
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="category">Category*</label>
+        <label className="px-1" htmlFor="category">Category*</label>
         {categories.length > 0 &&
-          <select name="category" id="category" defaultValue={product?.category.name || ''}  >
+          <select className="bg-orange-200 px-1 rounded-lg py-2" name="category" id="category" defaultValue={product?.category.name || ''}  >
             {categories.map((category: CategoryInterface) => (
               <option key={category.name} value={category.name}>{category.name}</option>
             ))}
@@ -128,8 +129,8 @@ export default function ProductForm({ product }: formProps) {
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="price">Price*</label>
-        <input className="border" type='number' id="price" name="price" step=".01" defaultValue={product?.price || ''} />
+        <label className="px-1" htmlFor="price">Price*</label>
+        <input className="py-1 border" type='number' id="price" name="price" step=".01" defaultValue={product?.price || ''} />
         {responseData?.errors?.price && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.price}
@@ -137,7 +138,7 @@ export default function ProductForm({ product }: formProps) {
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="gender">Gender:</label>
+        <label className="px-1" htmlFor="gender">Gender:</label>
         <select name="gender" id="gender" defaultValue={product?.gender || ''}>
           <option value="men">Men</option>
           <option value="women">Women</option>
@@ -150,8 +151,8 @@ export default function ProductForm({ product }: formProps) {
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="stock">Stock*</label>
-        <input className="border" type="number" id="stock" name="stock" defaultValue={product?.stock || ''} />
+        <label className="px-1" htmlFor="stock">Stock*</label>
+        <input className="py-1 border" type="number" id="stock" name="stock" defaultValue={product?.stock || ''} />
         {responseData?.errors?.stock && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.stock}
@@ -159,8 +160,8 @@ export default function ProductForm({ product }: formProps) {
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="discount">Discount(%):</label>
-        <input className="border" type="number" id="discount" name="discount" defaultValue={product?.discount || 0} />
+        <label className="px-1" htmlFor="discount">Discount(%):</label>
+        <input className="py-1 border" type="number" id="discount" name="discount" defaultValue={product?.discount || 0} />
         {responseData?.errors?.discount && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.discount}
@@ -168,26 +169,26 @@ export default function ProductForm({ product }: formProps) {
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="isFeatured">Feature it?</label>
-        <input className="border" type="checkbox" id="isFeatured" name="isFeatured" defaultChecked={product?.isFeatured || false} />
+        <label className="px-1" htmlFor="isFeatured">Feature it?</label>
+        <input className="py-1 border h-4 " type="checkbox" id="isFeatured" name="isFeatured" defaultChecked={product?.isFeatured || false} />
       </div>
       <div className="flex flex-col">
-        <label htmlFor="isLive">Live it?</label>
-        <input className="border" type="checkbox" id="isLive" name="isLive" defaultChecked={product?.isLive || false} />
+        <label className="px-1" htmlFor="isLive">Live it?</label>
+        <input className="py-1 border h-4" type="checkbox" id="isLive" name="isLive" defaultChecked={product?.isLive || false} />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-5">
         {files.length > 0 && <div className='flex flex-wrap gap-3 justify-center p-2'>
           {files.map((file, index) => (
-            <div className=' relative h-[150px] w-2/3' key={file.name || index}>
-              <Image className='object-cover' src={file.preview || file} alt={file} fill />
-              <button type="button" onClick={(e) => removeFileUpload(e, index)} className="absolute w-6 h-6 top-0 right-0 rounded-full translate-x-1/3 -translate-y-1/3 bg-red-500 text-white text-center font-bold shadow-lg">x</button>
+            <div className=' relative h-[150px] w-[150px] border border-orange-400 rounded-lg' key={file.name || index}>
+              <Image className='object-contain p-2' src={file.preview || file} alt={file} fill />
+              <button type="button" onClick={(e) => removeFileUpload(e, index)} className="absolute w-5 h-5 top-0 right-0 rounded-full translate-x-1/3 -translate-y-1/3 bg-red-500 text-white text-center font-bold shadow-lg text-xs">x</button>
             </div>
 
           ))}
         </div>}
         <Dropzone maxFiles={5} onDrop={(acceptedFiles, rejectedFiles) => handleFileSelection(acceptedFiles, rejectedFiles)}>
           {({ getRootProps, getInputProps }) => (
-            <section>
+            <section className="h-[150px] flex justify-center items-center border border-dashed border-gray-400 rounded-lg">
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 <p className="lg:hidden">Touch here to select files</p>
@@ -202,7 +203,8 @@ export default function ProductForm({ product }: formProps) {
           </p>
         )}
       </div>
-      <button type="submit">{product ? "Update" : "Submit"}</button>
+      <button className="rounded-lg py-2 px-1 bg-orange-700 text-white font-bold text-md hover:bg-orange-800 transition-colors" type="submit">{product ? "Update" : "Submit"}</button>
     </form>
+  </div>
   );
 }
