@@ -8,6 +8,7 @@ import Link from "next/link";
 import AddToCartController from "@/components/Products/AddToCartController";
 import calculateDiscountedPrice from "@/utils/calculateDiscountedPrice";
 import InfoProductListing from "@/components/Products/InfoProductListing";
+import RelatedProducts from "@/components/Products/RelatedProducts";
 
 
 
@@ -39,22 +40,27 @@ export default async function ProductPage({
                             <h1 className="font-bold text-2xl lg:text-3xl">{product.name}</h1>
                             <Link href={`/products?category=${product.category.name}`} className="font-bold text-xs hover:underline text-orange-500">{product.category.name}</Link>
                         </div>
-                       
+
                         {/*Div for product Price and Cart CTA*/}
-                        <div className="flex flex-col gap-4 bg-white p-3 rounded-lg">
-                        <p className="bg-white hidden lg:block leading-7 ">{product.description}</p>
+                        <div className="flex flex-col gap-4 rounded-lg">
+                            <div className="hidden lg:flex flex-col gap-2">
+                                <p className="font-bold text-orange-800 text-xl">Description</p>
+                                <p className="leading-7 ">{product.description}</p>
+                            </div>
                             <div className="flex flex-wrap gap-2 items-center">
                                 {product.discount ? <p className="line-through text-gray-400">${product.price}</p> : <p className="font-bold text-xl">${product.price}</p>}
                                 {product.discount ? <p className="text-orange-400 font-bold text-l">-{product.discount}%</p> : null}
                                 {product.discount ? <p className="font-bold text-xl">${calculateDiscountedPrice(product.price, product.discount)}</p> : null}
                             </div>
                             <AddToCartController {...JSON.parse(JSON.stringify(product))} />
-                           
+
                         </div>
 
                     </div>
                 </div>
-                <InfoProductListing description={product.description} /></div>
+                <InfoProductListing description={product.description} />
+                <RelatedProducts product={product} />
+            </div>
         )
     } else
         return (
