@@ -47,7 +47,7 @@ export default function Hero() {
           />
           <Link
             className="absolute bottom-6 left-3 rounded-lg bg-orange-400 lg:p-3 p-2 font-bold transition-colors duration-200  hover:bg-orange-800 hover:text-white"
-            href={"/products/men"}
+            href={"/products/?gender=men"}
           >
             Explore Men
           </Link>
@@ -61,7 +61,7 @@ export default function Hero() {
           />
           <Link
             className="absolute bottom-6 left-3 rounded-lg bg-orange-400 lg:p-3 p-2 font-bold transition-colors duration-200  hover:bg-orange-800 hover:text-white"
-            href={"/products/men"}
+            href={"/products?gender=women"}
           >
             Explore Women
           </Link>
