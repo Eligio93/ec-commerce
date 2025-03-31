@@ -3,13 +3,11 @@
 import { HydratedDocument } from "mongoose";
 import ProductInterface from "@/interfaces/product.interface";
 import Image from "next/image";
-import { CheckCircleIcon, XCircleIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon, XCircleIcon} from "@heroicons/react/24/solid";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export default function InventoryProductCard({ product }: { product: HydratedDocument<ProductInterface> }) {
-    //picture 
-    //body
-    //ctas
 
     return <div className="flex flex-col bg-white p-2 gap-2 rounded-lg shadow-lg md:flex-row md:items-center">
         <div className="relative h-[80px] md:min-w-[120px]">
@@ -31,12 +29,13 @@ export default function InventoryProductCard({ product }: { product: HydratedDoc
                 <p>Discount: {product.discount}%</p>
             </div>
 
-            <div className="flex justify-end gap-2">
-                <Link href={`/admin/edit/${product._id}`} className="text-white flex gap-1 items-center rounded-full bg-violet-600 px-5 py-1 hover:bg-violet-900 transition-colors duration-300">
-                    <PencilSquareIcon className="size-4 fill-white" />
-                    Edit</Link>
-                <button className="text-white flex gap-1 items-center rounded-full bg-red-700 px-5 py-1  hover:bg-red-900 transition-colors duration-300">
-                    <TrashIcon className="size-4 fill-white" />Delete</button>
+            <div className="flex justify-end gap-2 md:gap-5">
+                <Link href={`/admin/edit/${product._id}`} >
+                    <PencilSquareIcon className="transition-transform size-5 md:size-6 text-violet-600 hover:scale-125" />
+                </Link>
+                <button >
+                    <TrashIcon title="Delete" className="size-5 transition-transform md:size-6 text-red-600 hover:scale-125" />
+                </button>
 
             </div>
         </div>
