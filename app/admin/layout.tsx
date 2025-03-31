@@ -8,23 +8,23 @@ export default function AdminLayout({
     children: React.ReactNode;
 }>) {
     return <div className="flex rounded-lg sm:gap-2">
-        <div className="flex flex-col gap-5 bg-slate-50 p-2 rounded-lg min-h-[calc(100vh-66px)]">
-            <h2 className="text-center">ADMIN</h2>
+        <div className="flex flex-col gap-5 bg-slate-50 p-1 sm:p-2 w-fit rounded-lg min-h-[calc(100vh-66px)]">
+            <h2 className="text-center font-bold">Admin</h2>
             <ul className="flex flex-col gap-3 justify-center">
                 <Link className="flex flex-col gap-2 items-center" href="/admin">
-                    <ClipboardDocumentListIcon className="size-7" />
+                    <ClipboardDocumentListIcon className="size-6 sm:size-7" />
                     <p className='text-xs'>Inventory</p>
                 </Link>
-                <Link className="flex flex-col gap-2 items-center" href="/admin">
-                    <FolderOpenIcon className="size-7" />
+                <Link className="flex flex-col gap-2 items-center" href="/admin/categories">
+                    <FolderOpenIcon className="size-6 sm:size-7" />
                     <p className='text-xs'>Categories</p>
                 </Link>
                 <Link className="flex flex-col gap-2 items-center" href="/admin/newProduct">
-                    <DocumentPlusIcon className="size-7" />
+                    <DocumentPlusIcon className="size-6 sm:size-7" />
                     <p className='text-xs text-center'>New Product</p>
                 </Link>
                 <Link className="flex flex-col gap-2 items-center" href="/admin/newCategory">
-                    <FolderPlusIcon className="size-7" />
+                    <FolderPlusIcon className="size-6 sm:size-7" />
                     <p className='text-xs text-center'>New Category</p>
                 </Link>
             </ul>
