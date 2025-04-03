@@ -11,15 +11,15 @@ import Image from "next/image";
 type CategoryFormProps = {
     category?: HydratedDocument<CategoryInterface>;
 };
-type FileWithPreview = File & { preview: string };
+
 
 export default function CategoryForm({ category }: CategoryFormProps) {
-    const [files, setFiles] = useState<FileWithPreview[]>([]);
+    const [files, setFiles] = useState<any[]>(category ? [category.image] : []);
     const [rejectedFiles, setRejectedFiles] = useState<any[]>([]);
 
     useEffect(() => {
         if (rejectedFiles.length > 0) {
-            toast.error("You can only upload one image")
+            toast.error("You can ONLY upload 1 image")
         }
     }, [rejectedFiles])
 
@@ -31,6 +31,7 @@ export default function CategoryForm({ category }: CategoryFormProps) {
         })));
 
     }
+    console.log(files)
 
     return <div className="flex flex-col gap-2">
         <h1 className="font-bold  px-3 py-1 bg-orange-800 text-white rounded-lg">{category ? 'Edit Category' : 'New Category'}</h1>
@@ -43,16 +44,17 @@ export default function CategoryForm({ category }: CategoryFormProps) {
                 <label htmlFor="description">Description</label>
                 <textarea className="resize-none w-full border border-orange-300 rounded-lg p-2" id="description" name="description" defaultValue={category?.description} />
             </div>
-            <div>
-                <label htmlFor="isFeatured">Do you want to feature the category?</label>
-                <input type="checkbox" id="isFeatured" name="isFeatured" defaultChecked={category?.isFeatured} />
+            <div className="flex flex-col gap-2  items-center">
+                <label htmlFor="isFeatured">Do you want to feature the category in the Home Page?</label>
+                <input className="lg:size-5 size-4 " type="checkbox" id="isFeatured" name="isFeatured" defaultChecked={category?.isFeatured} />
             </div>
-
+            <hr />
             <div className="flex flex-col gap-2">
                 <h2 className="text-start">Upload Category Image</h2>
-                {files.length > 0 && files.map((file) => <div className="relative self-center h-[150px] w-full " key={file.name}>
+
+                {files.length > 0 && files.map((file: any) => <div className="relative self-center h-[150px] md:h-[200px] md:w-[250px] w-[200px] border " key={file.name || file}>
                     <button type="button" onClick={() => setFiles([])} className="absolute top-0 right-0 bg-red-500 h-5 w-5 z-10 text-white rounded-md translate-x-1/2 -translate-y-1/2 font-bold flex justify-center items-center text-sm">X</button>
-                    <Image src={file.preview} fill alt={file.name} className="object-cover" />
+                    <Image src={file.preview || file} fill alt={(category ? category.name : file.name) + 'image'} className="object-contain" />
                 </div>)}
                 <Dropzone maxFiles={1} accept={{ 'image/*': [] }} onDrop={(acceptedFiles, rejectedFiles) => handleFileSelection(acceptedFiles, rejectedFiles)}>
                     {({ getRootProps, getInputProps }) => (
@@ -61,8 +63,8 @@ export default function CategoryForm({ category }: CategoryFormProps) {
                                 <div {...getRootProps()} className="h-[150px] flex justify-center items-center border border-dashed border-orange-300 rounded">
                                     <input {...getInputProps()} className="min-w-0" />
                                     {files.length == 0 && <>
-                                        <p className="hidden">Drag 'n' drop or click to select an image</p>
-                                        <p className="lg:hidden">Touch to select an image</p>
+                                        <p className="hidden italic opacity-80 text-sm lg:block ">Drag 'n' drop or click to select an image</p>
+                                        <p className="lg:hidden italic opacity-80 text-sm">Touch to select an image</p>
                                     </>}
                                 </div>}
                         </section>
