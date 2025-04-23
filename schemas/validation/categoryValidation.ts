@@ -12,6 +12,7 @@ export const categoryValidation = z.object({
     if (value === "true") return true;
     if (value === "false") return false;
   }),
+  image:z.union([ z.instanceof(File, { message: "Please uplaod one Image" }), z.string().trim()]),
 });
 
 export type categoryValidationState =
@@ -19,6 +20,7 @@ export type categoryValidationState =
       errors?: {
         name: string[];
         description: string[];
+        image: string[];
       };
       message?: string;
       success?: boolean;
