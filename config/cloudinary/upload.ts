@@ -1,5 +1,6 @@
 // Require the cloudinary library
 import { v2 as cloudinary } from "cloudinary";
+import { UploadApiResponse } from "cloudinary";
 
 // Return "https" URLs by setting secure: true
 cloudinary.config({
@@ -25,4 +26,28 @@ export async function uploadMultipleImages(
     urlArray.push(res.secure_url);
   }
   return urlArray;
+}
+
+export async function uploadCategoryImage(file: File, categoryTitle: string) {
+  const existingFolder = await cloudinary.search
+    .expression(`folder:satur/categories/${categoryTitle}/*`)
+    .execute();
+  if (existingFolder) {
+    for (let asset of existingFolder.resources) {
+      await cloudinary.uploader.destroy(asset.public_id);
+    }
+  }
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = new Uint8Array(arrayBuffer);
+  const uploadResult: UploadApiResponse = await new Promise((resolve) => {
+    cloudinary.uploader
+      .upload_stream(
+        { folder: `satur/categories/${categoryTitle}` },
+        (error, uploadResult) => {
+          return resolve(uploadResult as UploadApiResponse);
+        }
+      )
+      .end(buffer);
+  });
+  return uploadResult.secure_url;
 }
