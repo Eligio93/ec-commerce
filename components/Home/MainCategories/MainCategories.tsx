@@ -2,6 +2,7 @@
 import CategoryInterface from "@/interfaces/category.interface";
 import Image from "next/image";
 import Link from "next/link";
+import HomeHeader from "../HomeHeader";
 import { useEffect, useState } from "react";
 
 export default function MainCategories() {
@@ -32,8 +33,8 @@ export default function MainCategories() {
   if (loading) return <p className="text-center">Loading</p>;
 
   return (
-    <div className="flex flex-col gap-2">
-      <h2 className="text-center">Explore Main Products</h2>
+    <div className="flex flex-col gap-5">
+      <HomeHeader title={'MAIN CATEGORIES'} />
       {categories.length > 0 ? (
         <div className="flex flex-wrap justify-center gap-5">
           {categories.map((category: CategoryInterface, index: number) => (
@@ -42,7 +43,7 @@ export default function MainCategories() {
               key={category._id}
               className={`
               ${index > 3 && !viewMore ? "hidden" : "flex"}
-             flex-col gap-3 items-center flex-[0_0_100%] sm:flex  sm:p-2 sm:flex-[0_0_48%] md:flex-[0_0_29%] lg:flex-[0_0_32%] rounded-lg border hover:shadow-lg`}
+             bg-white flex-col gap-3 items-center flex-[0_0_100%] sm:flex  sm:p-2 sm:flex-[0_0_48%] md:flex-[0_0_29%] lg:flex-[0_0_32%] rounded-lg border hover:shadow-lg`}
             >
               <div className="relative w-full h-[100px] md:h-[150px]">
                 <Image

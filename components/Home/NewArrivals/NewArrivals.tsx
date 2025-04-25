@@ -3,7 +3,7 @@ import Product from "@/schemas/Product";
 import ProductInterface from "@/interfaces/product.interface";
 import { HydratedDocument } from "mongoose";
 import ProductListingCard from "@/components/ProductListingCard";
-
+import HomeHeader from "../HomeHeader";
 import newArrivalsbg from "@/public/newArrivalsbg.jpg"
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +17,7 @@ export default async function NewArrivals() {
     .populate('category')
 
   return <section className="flex flex-col gap-5">
-    <h1 className="text-center">New Arrivals</h1>
+    <HomeHeader title={'NEW ARRIVALS'} />
 
     <div
       className="grid grid-cols-2 sm:grid-cols-4  gap-3">
