@@ -1,15 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 @layer utilities {
-    input[id="numberInputCart"]::-webkit-inner-spin-button,
-    input[id="numberInputCart"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-  
-    input[id="numberInputCart"] {
-      -moz-appearance: textfield;
-    }
+  input[id="numberInputCart"]::-webkit-inner-spin-button,
+  input[id="numberInputCart"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
+
+  input[id="numberInputCart"] {
+    -moz-appearance: textfield;
+  }
+}
+
+
