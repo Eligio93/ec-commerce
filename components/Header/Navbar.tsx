@@ -7,13 +7,13 @@ export default function Navbar({ openMenu, reference }: { openMenu: boolean, ref
       <nav className='hidden lg:flex lg:flex-1 lg:p-0 lg:static lg:border-none '>
         <ul className="lg:flex lg:justify-between lg:w-full items-center gap-5">
           <li>
-            <Link href={"/"}>Home</Link>
+            <Link className="font-['Rubik_Dirt'] text-orange-800" href={"/"}>Home</Link>
           </li>
           <li>
-            <Link href={"/categories"}>Categories</Link>
+            <Link className="font-['Rubik_Dirt'] text-orange-800" href={"/categories"}>Categories</Link>
           </li>
           <li>
-            <Link href={"/products"}>All Products</Link>
+            <Link className="font-['Rubik_Dirt'] text-orange-800" href={"/products"}>All Products</Link>
           </li>
         </ul>
       </nav>
@@ -28,13 +28,13 @@ export default function Navbar({ openMenu, reference }: { openMenu: boolean, ref
         {/* <ul className="lg:flex lg:justify-between lg:w-full items-center"> */}
         <ul className="flex flex-col gap-10">
           <li>
-            <Link href={"/"}>Home</Link>
+            <Link className="font-['Rubik_Dirt'] text-orange-800" href={"/"}>Home</Link>
           </li>
           <li>
-            <Link href={"/categories"}>Categories</Link>
+            <Link className="font-['Rubik_Dirt'] text-orange-800" href={"/categories"}>Categories</Link>
           </li>
           <li>
-            <Link href={"/products"}>All Products</Link>
+            <Link className="font-['Rubik_Dirt'] text-orange-800" href={"/products"}>All Products</Link>
           </li>
         </ul>
       </motion.nav>}
