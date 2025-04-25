@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Reuzel",
+        "image": "/reuzelLogo.jpg",
+        "link": "/products?brands=reuzel",
+        "isFeatured": true
+    },
+    {
+        "name": "Proraso",
+        "image": "/prorasoLogo.jpg",
+        "link": "/products?brands=proraso",
+        "isFeatured": true
+    },
+    {
+        "name": "Marvis",
+        "image": "/marvisLogo.webp",
+        "link": "/products?brands=marvis",
+        "isFeatured": true
+    },
+    {
+        "name": "Pantene",
+        "image": "/panteneLogo.jpg",
+        "link": "/products?brands=pantene",
+        "isFeatured": true
+    }
+]
