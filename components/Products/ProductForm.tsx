@@ -8,11 +8,9 @@ import { productValidationState } from "@/schemas/validation/productValidation";
 import Dropzone from "react-dropzone";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { HydratedDocument } from "mongoose";
-
 
 type formProps = {
-  product?: HydratedDocument<ProductInterface>;
+  product?: ProductInterface;
 };
 
 
@@ -84,8 +82,8 @@ export default function ProductForm({ product }: formProps) {
   if (loading) return <p className="text-center">Loading</p>
 
   return (<div className="flex flex-col gap-2 w-full ">
-    <h1 className="text-xl px-3 py-1 bg-orange-800 text-white rounded-lg">{product ? 'Edit Product' : 'New Product'}</h1>
-    <form onSubmit={handleSubmit} className="[&_input]:rounded-lg [&_input]:border-orange-300 [&_input]:px-1  flex flex-col gap-5 p-2  sm:p-3 border-l border-orange-800 bg-white sm:rounded-lg shadow-lg">
+    <h1 className="font-bold  px-3 py-1 bg-orange-800 text-white rounded-lg">{product ? 'Edit Product' : 'New Product'}</h1>
+    <form onSubmit={handleSubmit} className="[&_input]:rounded-lg [&_input]:border-orange-300 [&_input]:px-1 [&_input]:w-full flex flex-col gap-5 p-2  sm:p-3 border-l border-orange-800 bg-white rounded-lg shadow-lg">
       <div className="flex flex-col">
         <label className="px-1" htmlFor="Title">Title*</label>
         <input className="py-1 border-orange-300 border" type="text" id="title" name="title" defaultValue={product?.name || ''} />
@@ -98,7 +96,7 @@ export default function ProductForm({ product }: formProps) {
 
       <div className="flex flex-col">
         <label className="px-1" htmlFor="description">Description*</label>
-        <textarea className="border px-1 py-1 rounded-lg border-orange-300 resize-none h-20 sm:h-36 lg:min-h-64" id="description" name="description" defaultValue={product?.description || ''} />
+        <textarea className="border px-1 py-1 rounded-lg border-orange-300 resize-none h-20 sm:h-36 lg:min-h-64 w-full" id="description" name="description" defaultValue={product?.description || ''} />
         {responseData?.errors?.description && (
           <p className="self-end w-[60%] text-sm text-red-500">
             {responseData?.errors?.description}
@@ -188,8 +186,8 @@ export default function ProductForm({ product }: formProps) {
         </div>}
         <Dropzone maxFiles={5} onDrop={(acceptedFiles, rejectedFiles) => handleFileSelection(acceptedFiles, rejectedFiles)}>
           {({ getRootProps, getInputProps }) => (
-            <section className="h-[150px] flex justify-center items-center border border-dashed border-gray-400 rounded-lg">
-              <div {...getRootProps()}>
+            <section >
+              <div {...getRootProps()} className="h-[150px] flex justify-center items-center border border-dashed border-orange-300 rounded-lg">
                 <input {...getInputProps()} />
                 <p className="lg:hidden">Touch here to select files</p>
                 <p className="hidden lg:block">Drag 'n' drop some files here, or click to select files</p>

@@ -4,7 +4,7 @@ import connectDB from "@/config/database/connectDB";
 import User from "@/schemas/User";
 import UserInterface from "@/interfaces/user.interface";
 import bcrypt from "bcryptjs";
-import { HydratedDocument } from "mongoose";
+
 
 export async function register(state: AuthFormState, formData: FormData) {
   const validatedFields = RegisterSchema.safeParse({
@@ -31,7 +31,7 @@ export async function register(state: AuthFormState, formData: FormData) {
     //hash Password
     const hashedPassword = await bcrypt.hash(validatedFields.data.password, 10);
     //create new User
-    const user: HydratedDocument<UserInterface> = new User({
+    const user= new User({
       name: validatedFields.data.name,
       lastName: validatedFields.data.lastName,
       email: validatedFields.data.email,

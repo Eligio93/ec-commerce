@@ -1,4 +1,3 @@
-import { HydratedDocument } from "mongoose"
 import ProductInterface from "@/interfaces/product.interface"
 import CategoryInterface from "@/interfaces/category.interface"
 import connectDB from "@/config/database/connectDB"
@@ -17,7 +16,7 @@ export default async function Edit({
 
     const id = (await params).id
     await connectDB();
-    const isProduct: HydratedDocument<ProductInterface> | null = await Product.findOne({ _id: id }).populate("category")
+    const isProduct:ProductInterface | null = await Product.findOne({ _id: id }).populate("category")
     const isCategory: CategoryInterface | null = await Category.findOne({ _id: id })
     if (isProduct) {
         return <ProductForm product={JSON.parse(JSON.stringify(isProduct))} />

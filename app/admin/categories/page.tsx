@@ -1,12 +1,11 @@
 import connectDB from "@/config/database/connectDB";
 import CategoryInterface from "@/interfaces/category.interface";
 import Category from "@/schemas/Category";
-import { HydratedDocument } from "mongoose";
 import InventoryCategoryCard from "@/components/Categories/InventoryCategoryCard";
 
 export default async function AdminCategories() {
     await connectDB();
-    const categories: HydratedDocument<CategoryInterface>[] = await Category.find({});
+    const categories: CategoryInterface[] = await Category.find({});
 
     return <div className="flex flex-col gap-2 w-full p-1">
         <h1 className="text-xl px-3 py-1 bg-orange-800 text-white rounded-lg">Categories</h1>

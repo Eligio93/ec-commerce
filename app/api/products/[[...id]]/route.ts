@@ -3,25 +3,24 @@ import { productValidation } from "@/schemas/validation/productValidation";
 import connectDB from "@/config/database/connectDB";
 import Product from "@/schemas/Product";
 import ProductInterface from "@/interfaces/product.interface";
-import { HydratedDocument } from "mongoose";
 import Category from "@/schemas/Category";
-
 //GET ALL PRODUCTS
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const id = (await params).id;
   try {
     await connectDB();
     if (!id) {
-      const products: HydratedDocument<ProductInterface>[] = await Product.find(
-        {}
-      ).populate("category");
+      const products: ProductInterface[] = await Product.find({}).populate(
+        "category",
+      );
       return Response.json(products, { status: 200 });
     } else {
-      const product: HydratedDocument<ProductInterface> | null =
-        await Product.findOne({ _id: id }).populate("category");
+      const product: ProductInterface | null = await Product.findOne({
+        _id: id,
+      }).populate("category");
       if (product) {
         return Response.json(product, { status: 200 });
       }
@@ -29,7 +28,7 @@ export async function GET(
   } catch (error) {
     return Response.json(
       { message: "Impossible to retrieve Product/s" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 }
@@ -44,7 +43,7 @@ export async function POST(req: Request) {
       {
         message: "Please upload at least one image",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   const validatedProduct = productValidation.safeParse(dataObject);
@@ -66,7 +65,7 @@ export async function POST(req: Request) {
         {
           message: "A Product with the same title already exists",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     //if the category selected exists
@@ -78,15 +77,15 @@ export async function POST(req: Request) {
         {
           message: "Category not found",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
     //upload the images to cloudinary
     const imagesUrl = await uploadMultipleImages(
       images,
-      validatedProduct.data.title
+      validatedProduct.data.title,
     ); //put images in newProduct.title folder in cloudinary
-    const newProduct: HydratedDocument<ProductInterface> = new Product({
+    const newProduct= new Product({
       name: validatedProduct.data.title,
       description: validatedProduct.data.description,
       brand: validatedProduct.data.brand,
@@ -107,7 +106,7 @@ export async function POST(req: Request) {
       {
         message: "Product created successfully",
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.log("SERVER ERROR", error);
@@ -117,7 +116,7 @@ export async function POST(req: Request) {
 
 export async function PUT(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const productId = (await params).id;
   if (!productId) {
@@ -125,7 +124,7 @@ export async function PUT(
       {
         message: "Product to edit not found",
       },
-      { status: 404 }
+      { status: 404 },
     );
   }
   const data = await req.formData();
@@ -137,7 +136,7 @@ export async function PUT(
       {
         message: "Please upload at least one image",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   const validatedProduct = productValidation.safeParse(dataObject);
@@ -160,7 +159,7 @@ export async function PUT(
         {
           message: "A Product with the same title already exists",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     //if the category selected exists
@@ -172,7 +171,7 @@ export async function PUT(
         {
           message: "Category not found",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
     let imagesUrl: string[] = [];
@@ -181,7 +180,7 @@ export async function PUT(
       // if the images are not string means are new images to be uploaded
       imagesUrl = await uploadMultipleImages(
         images as File[],
-        validatedProduct.data.title
+        validatedProduct.data.title,
       ); //put images in newProduct.title folder in cloudinary
     } else {
       imagesUrl = images as string[];
@@ -208,7 +207,7 @@ export async function PUT(
       {
         message: "Product created successfully",
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.log("SERVER ERROR", error);

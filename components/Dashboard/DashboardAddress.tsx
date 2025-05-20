@@ -2,7 +2,6 @@
 
 import UserInterface from "@/interfaces/user.interface";
 import { useEffect, useState } from "react";
-import { HydratedDocument } from "mongoose";
 import { addressValidationState } from "@/schemas/validation/addressValidation";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
@@ -15,7 +14,7 @@ type Country = {
 export default function DashboardAddress({
   user,
 }: {
-  user: HydratedDocument<UserInterface>;
+  user: UserInterface;
 }) {
   const [countries, setCountries] = useState<Country[]>([]);
   const [formFields, setFormFields] = useState({

@@ -1,17 +1,17 @@
 import connectDB from "@/config/database/connectDB";
 import Product from "@/schemas/Product";
 import ProductInterface from "@/interfaces/product.interface";
-import { HydratedDocument } from "mongoose";
 import ProductListingCard from "@/components/ProductListingCard";
 import HomeHeader from "../HomeHeader";
 import newArrivalsbg from "@/public/newArrivalsbg.jpg"
 import Image from "next/image";
 import Link from "next/link";
+import '@/schemas/Category'
 
 
 export default async function NewArrivals() {
   await connectDB();
-  const newArrivals: HydratedDocument<ProductInterface>[] = await Product.find({ isLive: true })
+  const newArrivals: ProductInterface[] = await Product.find({ isLive: true })
     .sort({ _id: -1 })
     .limit(6)
     .populate('category')

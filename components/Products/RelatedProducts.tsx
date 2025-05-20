@@ -1,16 +1,12 @@
 import connectDB from "@/config/database/connectDB"
 import Product from "@/schemas/Product";
-import Category from "@/schemas/Category";
 import ProductInterface from "@/interfaces/product.interface";
-import { HydratedDocument } from "mongoose";
-import Link from "next/link";
 import '@/schemas/Category'
-import Image from "next/image";
 import RelatedProductCarousel from "./RelatedProductsCarousel";
 
 
 
-export default async function RelatedProducts({ product }: { product: HydratedDocument<ProductInterface> }) {
+export default async function RelatedProducts({ product }: { product: ProductInterface }) {
     await connectDB();
     // related product are the ones with same category and same gender or just same gender
     let relatedProducts = []

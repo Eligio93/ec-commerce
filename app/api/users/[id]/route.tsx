@@ -1,7 +1,5 @@
 import connectDB from "@/config/database/connectDB";
 import User from "@/schemas/User";
-import UserInterface from "@/interfaces/user.interface";
-import { HydratedDocument } from "mongoose";
 import bcrypt from "bcryptjs";
 import { profileValidation } from "@/schemas/validation/profileValidation";
 import { addressValidation } from "@/schemas/validation/addressValidation";

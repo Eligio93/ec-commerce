@@ -3,14 +3,14 @@ import ProductInterface from "@/interfaces/product.interface";
 import { useContext } from "react";
 import { cartContext } from "@/config/CartProvider";
 import { CartProduct } from "@/config/CartProvider";
-import { HydratedDocument } from "mongoose";
+
 import CartControllerBar from "../CartControllerBar";
 
 
 
 
 
-export default function AddToCartController(product: HydratedDocument<ProductInterface>) {
+export default function AddToCartController({product}: {product: ProductInterface}) {
     const {
         cartProducts,
         addOne,
@@ -20,7 +20,6 @@ export default function AddToCartController(product: HydratedDocument<ProductInt
         setQuantity,
         removeProduct } = useContext(cartContext)
     const existingCartProduct: CartProduct = cartProducts.find((cartProd: CartProduct) => cartProd.product._id === product._id)
-    console.log('CART PRODUCTS', cartProducts)
 
     if (existingCartProduct) {
         return <CartControllerBar existingCartProduct={existingCartProduct} />

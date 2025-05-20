@@ -1,17 +1,15 @@
 import ProductInterface from "@/interfaces/product.interface";
-import { HydratedDocument } from "mongoose";
 import Image from "next/image";
 import AddToCartController from "./Products/AddToCartController";
 import Link from "next/link";
 import calculateDiscountedPrice from "@/utils/calculateDiscountedPrice";
-import "@/schemas/Category";
 
 
 
 
 
-export default async function ProductListingCard({ product }: { product: HydratedDocument<ProductInterface> }) {
 
+export default async function ProductListingCard({ product }: { product: ProductInterface }) {
     return (
         <div className="bg-white rounded-lg p-2 flex flex-col gap-2 lg:gap-5 lg:p-3 border min-w-[100px]">
             <Link href={`/products/${product._id}`}
@@ -40,7 +38,7 @@ export default async function ProductListingCard({ product }: { product: Hydrate
                     </div>
                     <hr />
                     {/*title*/}
-                    <h3 className='h-[70px] line-clamp-3 group-hover:underline group-hover:cursor-pointer font-bold text-lg/6 line flex-1'>{product.name}</h3>
+                    <h3 className='h-[70px] line-clamp-3 group-hover:underline group-hover:cursor-pointer font-bold lg:text-lg/6 line flex-1'>{product.name}</h3>
                     {/*pricing*/}
                     <div className="flex flex-wrap gap-2">
                         {product.discount ? <p className="line-through text-gray-400">${product.price}</p> : <p className="font-medium">${product.price}</p>}
@@ -52,7 +50,7 @@ export default async function ProductListingCard({ product }: { product: Hydrate
             </Link>
             <AddToCartController
                 //serialize the product object to pass it to client component
-                {...JSON.parse(JSON.stringify(product))}
+                product={{ ...JSON.parse(JSON.stringify(product)) }}
 
             />
         </div>

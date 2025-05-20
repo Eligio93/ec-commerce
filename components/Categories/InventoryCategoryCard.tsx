@@ -1,13 +1,13 @@
 'use client'
 
-import { HydratedDocument } from "mongoose"
 import CategoryInterface from "@/interfaces/category.interface"
 import Link from "next/link"
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { useState } from "react"
+import { toast } from "sonner"
 
 type Props = {
-    category: HydratedDocument<CategoryInterface>
+    category: CategoryInterface
 }
 
 export default function InventoryCategoryCard({ category }: Props) {
@@ -25,6 +25,15 @@ export default function InventoryCategoryCard({ category }: Props) {
             method: 'DELETE'
         })
         const data = await res.json()
+        console.log(res)
+        if (!res.ok) {
+            toast.error(data.message)
+            setOpenPopUp(false)
+        } else {
+            toast.success('Category deleted successfully')
+            setOpenPopUp(false)
+        }
+
         console.log(data)
 
     }

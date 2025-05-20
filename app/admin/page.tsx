@@ -1,7 +1,5 @@
 'use client'
 
-import Link from "next/link";
-import { HydratedDocument, set } from "mongoose";
 import ProductInterface from "@/interfaces/product.interface";
 import InventoryProductCard from "@/components/Products/InventoryProductCard";
 import { useState, useEffect } from "react";
@@ -11,16 +9,15 @@ import { useState, useEffect } from "react";
 export default function Admin() {
   const [query, setQuery] = useState("")
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [products, setProducts] = useState<HydratedDocument<ProductInterface>[] | null>(null)
-  const [filteredProducts, setFilteredProducts] = useState<HydratedDocument<ProductInterface>[]>([])
+  const [products, setProducts] = useState<ProductInterface[] | null>(null)
+  const [filteredProducts, setFilteredProducts] = useState<ProductInterface[]>([])
 
 
   useEffect(() => {
     async function getProducts() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/products`);
-        console.log(response)
-        const products: HydratedDocument<ProductInterface>[] = await response.json();
+        const products:ProductInterface[] = await response.json();
         setProducts(products);
       } catch (err) {
         console.error("Errorin fetching products:", err);
@@ -45,7 +42,7 @@ export default function Admin() {
   console.log(filteredProducts)
   return (
     <div className="w-full">
-      <h1>Inventory</h1>
+      <h1 className="text-xl px-3 py-1 bg-orange-800 text-white rounded-lg">Inventory</h1>
       {isLoading ? (<p>Loading...</p>) : (products ? (
         <div className="flex flex-col gap-5 p-2">
           <div className="w-full">

@@ -3,18 +3,17 @@ import UserInterface from "@/interfaces/user.interface";
 import { useEffect, useState } from "react";
 import DashboardProfile from "@/components/Dashboard/DashboardProfile";
 import DashboardAddress from "@/components/Dashboard/DashboardAddress";
-import { HydratedDocument } from "mongoose";
 import { useSession } from "next-auth/react";
 import dashboardIcon from "@/public/dashboardIcon.svg";
 import Image from "next/image";
 
 type DashboardProps = {
   selectedField: string;
-  user: HydratedDocument<UserInterface>;
+  user: UserInterface;
 };
 
 export default function Dashboard() {
-  const [user, setUser] = useState<HydratedDocument<UserInterface> | undefined>(
+  const [user, setUser] = useState<UserInterface | undefined>(
     undefined
   );
 

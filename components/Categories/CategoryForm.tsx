@@ -1,7 +1,6 @@
 'use client';
 
 import CategoryInterface from "@/interfaces/category.interface";
-import { HydratedDocument, set } from "mongoose";
 import Dropzone from "react-dropzone";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -11,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 
 type CategoryFormProps = {
-    category?: HydratedDocument<CategoryInterface>;
+    category?: CategoryInterface;
 };
 
 

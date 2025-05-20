@@ -1,13 +1,13 @@
 'use client'
 
-import { HydratedDocument } from "mongoose";
+
 import ProductInterface from "@/interfaces/product.interface";
 import Image from "next/image";
 import { CheckCircleIcon, XCircleIcon} from "@heroicons/react/24/solid";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
-export default function InventoryProductCard({ product }: { product: HydratedDocument<ProductInterface> }) {
+export default function InventoryProductCard({ product }: { product:ProductInterface}) {
 
     return <div className="flex flex-col bg-white p-2 gap-2 rounded-lg shadow-lg md:flex-row md:items-center">
         <div className="relative h-[80px] md:min-w-[120px]">

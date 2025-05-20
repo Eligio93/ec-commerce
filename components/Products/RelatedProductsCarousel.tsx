@@ -1,7 +1,6 @@
 'use client'
 import useEmblaCarousel from 'embla-carousel-react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import { HydratedDocument } from 'mongoose'
 import ProductInterface from '@/interfaces/product.interface'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -18,7 +17,7 @@ export default function RelatedProductCarousel({ products }: any) {
 
             <div className="embla overflow-hidden flex-1" ref={emblaRef}>
                 <div className="embla__container flex ">
-                    {products.map((product: HydratedDocument<ProductInterface>) => {
+                    {products.map((product: ProductInterface) => {
                         return <Link key={product.name} href={`/products/${product._id}`} className="embla__slide mr-5 flex-[0_0_100%] sm:flex-[0_0_48%] md:flex-[0_0_31%] lg:flex-[0_0_20%] p-3 bg-orange-200 lg:mr-5 rounded-lg flex flex-col gap-2 group">
                             <div className='relative h-[150px]'>
                                 <Image
@@ -34,7 +33,7 @@ export default function RelatedProductCarousel({ products }: any) {
                             </div>
 
                         </Link>
-                            
+
                     })}
 
                 </div>

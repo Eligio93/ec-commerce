@@ -1,7 +1,6 @@
 import connectDB from "@/config/database/connectDB";
 import Product from "@/schemas/Product";
 import ProductInterface from "@/interfaces/product.interface";
-import { HydratedDocument } from "mongoose";
 import "@/schemas/Category"
 import ProductImageCarousel from "@/components/Products/ProductImageCarousel";
 import Link from "next/link";
@@ -23,8 +22,7 @@ export default async function ProductPage({
     const id = (await params).id
     //aggiornare le views del prodotto
     await connectDB();
-    const product: HydratedDocument<ProductInterface> | null = await Product.findOne({ _id: id }).populate("category")
-    console.log(product)
+    const product: ProductInterface | null = await Product.findOne({ _id: id }).populate("category")
     if (product) {
         return (
             <div className="flex flex-col gap-5 p-5">

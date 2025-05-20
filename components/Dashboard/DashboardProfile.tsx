@@ -1,7 +1,6 @@
 "use client";
 import UserInterface from "@/interfaces/user.interface";
-import { HydratedDocument} from "mongoose";
-import { useState} from "react";
+import { useState } from "react";
 import { profileValidationState } from "@/schemas/validation/profileValidation";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
@@ -9,7 +8,7 @@ import { useSession } from "next-auth/react";
 export default function DashboardProfile({
   user,
 }: {
-  user: HydratedDocument<UserInterface>;
+  user: UserInterface;
 }) {
   const [formFields, setFormFields] = useState({
     name: user.name,

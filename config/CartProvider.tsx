@@ -2,11 +2,10 @@
 
 import { createContext } from "react";
 import { useState } from "react";
-import { HydratedDocument, set } from "mongoose";
 import ProductInterface from "@/interfaces/product.interface";
 
 export interface CartProduct {
-    product: HydratedDocument<ProductInterface>,
+    product: ProductInterface,
     quantity: number
 }
 export const cartContext = createContext({} as any);
@@ -17,18 +16,18 @@ export function CartProvider({ children }: any) {
     const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
 
     //function to add a product to the cart
-    function addToCart(product: HydratedDocument<ProductInterface>) {
+    function addToCart(product: ProductInterface) {
         setCartProducts([{ product, quantity: 1 }, ...cartProducts])
     }
     //function add 1
-    function addOne(product: HydratedDocument<ProductInterface>) {
+    function addOne(product: ProductInterface) {
         setCartProducts(cartProducts.map((cartProd) =>
             cartProd.product._id === product._id ?
                 { ...cartProd, quantity: cartProd.quantity + 1 } :
                 cartProd))
     }
     //function remove 1
-    function removeOne(product: HydratedDocument<ProductInterface>) {
+    function removeOne(product: ProductInterface) {
         const updatedCart = cartProducts.map((cartProd) =>
             cartProd.product._id === product._id ?
                 { ...cartProd, quantity: cartProd.quantity - 1 } :
@@ -40,7 +39,7 @@ export function CartProvider({ children }: any) {
         setCartProducts([])
     }
     //function update quantity
-    function setQuantity(product: HydratedDocument<ProductInterface>, quantity: number) {
+    function setQuantity(product: ProductInterface, quantity: number) {
         const updatedCart = cartProducts.map((cartProd) =>
             cartProd.product._id === product._id ?
                 { ...cartProd, quantity } :
@@ -49,7 +48,7 @@ export function CartProvider({ children }: any) {
     }
 
     //function remove product
-    function removeProduct(product: HydratedDocument<ProductInterface>) {
+    function removeProduct(product: ProductInterface) {
         setCartProducts(cartProducts.filter((cartProd) => cartProd.product._id !== product._id))
     }
 
