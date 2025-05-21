@@ -1,3 +1,4 @@
+'use client'
 import ProductInterface from "@/interfaces/product.interface";
 import Image from "next/image";
 import AddToCartController from "./Products/AddToCartController";
@@ -9,7 +10,7 @@ import calculateDiscountedPrice from "@/utils/calculateDiscountedPrice";
 
 
 
-export default async function ProductListingCard({ product }: { product: ProductInterface }) {
+export default function ProductListingCard({ product }: { product: ProductInterface }) {
     return (
         <div className="bg-white rounded-lg p-2 flex flex-col gap-2 lg:gap-5 lg:p-3 border min-w-[100px]">
             <Link href={`/products/${product._id}`}
@@ -50,7 +51,8 @@ export default async function ProductListingCard({ product }: { product: Product
             </Link>
             <AddToCartController
                 //serialize the product object to pass it to client component
-                product={{ ...JSON.parse(JSON.stringify(product)) }}
+                // product={{ ...JSON.parse(JSON.stringify(product)) }}
+                product={product}
 
             />
         </div>
