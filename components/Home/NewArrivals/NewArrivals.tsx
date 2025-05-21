@@ -34,7 +34,7 @@ export default async function NewArrivals() {
       </div>
       {newArrivals.length > 0 &&
         newArrivals.map((product) => {
-          return <ProductListingCard product={product} key={product.name} />;
+          return <ProductListingCard product={{ ...JSON.parse(JSON.stringify(product)) }} key={product.name} />;
         })
       }
     </div>
