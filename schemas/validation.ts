@@ -38,4 +38,3 @@ export type AuthFormState =
       success?: boolean;
     }
   | undefined;
-

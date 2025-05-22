@@ -5,41 +5,38 @@ import { profileValidationState } from "@/schemas/validation/profileValidation";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
-export default function DashboardProfile({
-  user,
-}: {
-  user: UserInterface;
-}) {
+export default function DashboardProfile({ user }: { user: UserInterface }) {
   const [formFields, setFormFields] = useState({
     name: user.name,
     lastName: user.lastName,
     email: user.email,
     password: user.password,
-    oldPassword: '',
-    newPassword: '',
-  })
+    oldPassword: "",
+    newPassword: "",
+  });
   const [isEditing, setIsEditing] = useState(false);
-  const { data: session, status, update } = useSession()
-  const [responseData, setResponseData] = useState<profileValidationState | undefined>(undefined)
+  const { data: session, status, update } = useSession();
+  const [responseData, setResponseData] = useState<
+    profileValidationState | undefined
+  >(undefined);
 
-  function handleEditing() { //when invoked reset the form to the user values and 
-    setIsEditing(!isEditing)
+  function handleEditing() {
+    //when invoked reset the form to the user values and
+    setIsEditing(!isEditing);
     setFormFields({
       name: user.name,
       lastName: user.lastName,
       email: user.email,
       password: user.password,
-      oldPassword: '',
-      newPassword: '',
-    })
-    setResponseData(undefined)
+      oldPassword: "",
+      newPassword: "",
+    });
+    setResponseData(undefined);
   }
-
 
   function handleChange(e: any) {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
-
   }
 
   async function handleSubmit(e: any) {
@@ -49,23 +46,23 @@ export default function DashboardProfile({
         `${process.env.NEXT_PUBLIC_URL}/api/users/${user._id}`,
         {
           method: "PUT",
-          body: JSON.stringify({ ...formFields, formSource: 'Profile' }),
-        }
-      )
+          body: JSON.stringify({ ...formFields, formSource: "Profile" }),
+        },
+      );
       const data = await res.json();
       if (!res.ok) {
         if (res.status === 404) {
-          toast.error('User not found. Please refresh the page')
+          toast.error("User not found. Please refresh the page");
         }
         setResponseData(data);
       } else {
-        setResponseData(undefined)
-        setIsEditing(false)
-        toast.success('Profile updated successfully')
+        setResponseData(undefined);
+        setIsEditing(false);
+        toast.success("Profile updated successfully");
       }
     } catch (error) {
       console.log("ERROR", error);
-      toast.error('Something went wrong')
+      toast.error("Something went wrong");
     } finally {
       update(); // update the session with the new user values
     }
@@ -76,7 +73,7 @@ export default function DashboardProfile({
       <div className="flex justify-between">
         <h2>Profile</h2>
         <button
-          className={`${isEditing && "bg-yellow-200 rounded-full py-1/2 px-2"}`}
+          className={`${isEditing && "py-1/2 rounded-full bg-yellow-200 px-2"}`}
           onClick={handleEditing}
         >
           {isEditing ? "Cancel" : "Edit"}
@@ -93,14 +90,14 @@ export default function DashboardProfile({
             id="name"
             name="name"
             value={formFields.name}
-            className="border w-[60%] py-1.5 pl-1 pr-3"
+            className="w-[60%] border py-1.5 pl-1 pr-3"
             autoComplete="off"
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
         {responseData?.errors?.name && (
-          <p className="self-end w-[60%] text-sm text-red-500">
+          <p className="w-[60%] self-end text-sm text-red-500">
             {responseData.errors.name}
           </p>
         )}
@@ -113,14 +110,14 @@ export default function DashboardProfile({
             id="lastName"
             name="lastName"
             value={formFields.lastName}
-            className="border w-[60%] py-1.5 pl-1 pr-3"
+            className="w-[60%] border py-1.5 pl-1 pr-3"
             autoComplete="off"
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
         {responseData?.errors?.lastName && (
-          <p className="self-end w-[60%] text-sm text-red-500">
+          <p className="w-[60%] self-end text-sm text-red-500">
             {responseData.errors.lastName}
           </p>
         )}
@@ -133,86 +130,92 @@ export default function DashboardProfile({
             id="email"
             name="email"
             value={formFields.email}
-            className="border w-[60%] py-1.5 pl-1 pr-3"
+            className="w-[60%] border py-1.5 pl-1 pr-3"
             autoComplete="off"
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
         {responseData?.errors?.email && (
-          <p className="self-end w-[60%] text-sm text-red-500">
+          <p className="w-[60%] self-end text-sm text-red-500">
             {responseData.errors.email}
           </p>
         )}
-        {user.password && !isEditing && < div className="flex items-center">
-          <label htmlFor="password" className="w-[40%] text-sm">
-            Password:
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formFields.password?.slice(0, 8)}
-            className="border w-[60%] py-1.5 pl-1 pr-3"
-            autoComplete="off"
-            onChange={handleChange}
-            disabled={!isEditing}
-          />
-        </div>}
-        {user.password && isEditing && <>< div className="flex items-center">
-          <label htmlFor="oldPassword" className="w-[40%] text-sm">
-            Old Password:
-          </label>
-          <input
-            type="password"
-            id="oldPassword"
-            name="oldPassword"
-            value={formFields.oldPassword}
-            className="border w-[60%] py-1.5 pl-1 pr-3"
-            autoComplete="off"
-            onChange={handleChange}
-            disabled={!isEditing}
-            placeholder='Type here your current password'
-          />
-        </div>
-          {responseData?.errors?.oldPassword && (
-            <p className="self-end w-[60%] text-sm text-red-500">
-              {responseData.errors.oldPassword}
-            </p>
-          )}
+        {user.password && !isEditing && (
           <div className="flex items-center">
-            <label htmlFor="newPassword" className="w-[40%] text-sm">
-              New Password:
+            <label htmlFor="password" className="w-[40%] text-sm">
+              Password:
             </label>
             <input
               type="password"
-              id="newPassword"
-              name="newPassword"
-              value={formFields.newPassword}
-              className="border w-[60%] py-1.5 pl-1 pr-3"
+              id="password"
+              name="password"
+              value={formFields.password?.slice(0, 8)}
+              className="w-[60%] border py-1.5 pl-1 pr-3"
               autoComplete="off"
               onChange={handleChange}
               disabled={!isEditing}
-              placeholder="Type here your new password"
             />
           </div>
-          {responseData?.errors?.newPassword && (
-            <p className="self-end w-[60%] text-sm text-red-500">
-              {responseData.errors.newPassword}
-            </p>
-          )}
-        </>
-        }
-        {isEditing && <button type="submit" className="bg-yellow-200 rounded-full py-1/2 px-2">Save</button>}
+        )}
+        {user.password && isEditing && (
+          <>
+            <div className="flex items-center">
+              <label htmlFor="oldPassword" className="w-[40%] text-sm">
+                Old Password:
+              </label>
+              <input
+                type="password"
+                id="oldPassword"
+                name="oldPassword"
+                value={formFields.oldPassword}
+                className="w-[60%] border py-1.5 pl-1 pr-3"
+                autoComplete="off"
+                onChange={handleChange}
+                disabled={!isEditing}
+                placeholder="Type here your current password"
+              />
+            </div>
+            {responseData?.errors?.oldPassword && (
+              <p className="w-[60%] self-end text-sm text-red-500">
+                {responseData.errors.oldPassword}
+              </p>
+            )}
+            <div className="flex items-center">
+              <label htmlFor="newPassword" className="w-[40%] text-sm">
+                New Password:
+              </label>
+              <input
+                type="password"
+                id="newPassword"
+                name="newPassword"
+                value={formFields.newPassword}
+                className="w-[60%] border py-1.5 pl-1 pr-3"
+                autoComplete="off"
+                onChange={handleChange}
+                disabled={!isEditing}
+                placeholder="Type here your new password"
+              />
+            </div>
+            {responseData?.errors?.newPassword && (
+              <p className="w-[60%] self-end text-sm text-red-500">
+                {responseData.errors.newPassword}
+              </p>
+            )}
+          </>
+        )}
+        {isEditing && (
+          <button
+            type="submit"
+            className="py-1/2 rounded-full bg-yellow-200 px-2"
+          >
+            Save
+          </button>
+        )}
       </form>
-
-    </section >
-
-  )
+    </section>
+  );
 }
-
-
-
 
 // return (
 //   <section>
@@ -245,7 +248,7 @@ export default function DashboardProfile({
 //           disabled={!isEditing}
 //         />
 //       </section>
-//       
+//
 
 //       {/*LAST NAME*/}
 //       <section className="flex">

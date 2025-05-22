@@ -15,11 +15,11 @@ export default function MainCategories() {
     const fetchFeaturedCategories = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_URL}/api/categories`
+          `${process.env.NEXT_PUBLIC_URL}/api/categories`,
         );
         const data = await res.json();
         const featuredCategories = data.filter(
-          (category: CategoryInterface) => category.isFeatured === true
+          (category: CategoryInterface) => category.isFeatured === true,
         );
         setCategories(featuredCategories);
       } catch (err) {
@@ -34,24 +34,22 @@ export default function MainCategories() {
 
   return (
     <div className="flex flex-col gap-5">
-      <HomeHeader title={'MAIN CATEGORIES'} />
+      <HomeHeader title={"MAIN CATEGORIES"} />
       {categories.length > 0 ? (
         <div className="flex flex-wrap justify-center gap-5">
           {categories.map((category: CategoryInterface, index: number) => (
             <Link
               href={`/products?category=${category.name}`}
               key={category._id}
-              className={`
-              ${index > 3 && !viewMore ? "hidden" : "flex"}
-             bg-white flex-col gap-3 items-center flex-[0_0_100%] sm:flex  sm:p-2 sm:flex-[0_0_48%] md:flex-[0_0_29%] lg:flex-[0_0_32%] rounded-lg border hover:shadow-lg`}
+              className={` ${index > 3 && !viewMore ? "hidden" : "flex"} flex-[0_0_100%] flex-col items-center gap-3 rounded-lg border bg-white hover:shadow-lg sm:flex sm:flex-[0_0_48%] sm:p-2 md:flex-[0_0_29%] lg:flex-[0_0_32%]`}
             >
-              <div className="relative w-full h-[100px] md:h-[150px]">
+              <div className="relative h-[100px] w-full md:h-[150px]">
                 <Image
                   src={category.image}
                   alt={category.name}
                   fill
                   sizes="100%"
-                  className="object-cover rounded-lg"
+                  className="rounded-lg object-cover"
                   placeholder="blur"
                   blurDataURL={category.image}
                 />
@@ -60,7 +58,7 @@ export default function MainCategories() {
             </Link>
           ))}
           <button
-            className="bg-orange-400 px-3 py-1 font-bold rounded-full sm:hidden"
+            className="rounded-full bg-orange-400 px-3 py-1 font-bold sm:hidden"
             onClick={() => setViewMore(!viewMore)}
           >
             {viewMore ? "View Less" : "View More"}

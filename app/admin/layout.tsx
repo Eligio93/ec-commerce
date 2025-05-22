@@ -1,34 +1,49 @@
 import Link from "next/link";
-import Image from "next/image";
-import { ClipboardDocumentListIcon, DocumentPlusIcon, FolderPlusIcon, FolderOpenIcon } from "@heroicons/react/24/outline";
+import {
+  ClipboardDocumentListIcon,
+  DocumentPlusIcon,
+  FolderPlusIcon,
+  FolderOpenIcon,
+} from "@heroicons/react/24/outline";
 
 export default function AdminLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return <div className="flex rounded-lg sm:gap-2">
-        <div className="flex flex-col gap-5 bg-slate-50 p-1 sm:p-2 w-fit rounded-lg min-h-[calc(100vh-66px)]">
-            <h2 className="text-center font-bold">Admin</h2>
-            <ul className="flex flex-col gap-3 justify-center">
-                <Link className="flex flex-col gap-2 items-center" href="/admin">
-                    <ClipboardDocumentListIcon className="size-6 sm:size-7" />
-                    <p className='text-xs'>Inventory</p>
-                </Link>
-                <Link className="flex flex-col gap-2 items-center" href="/admin/categories">
-                    <FolderOpenIcon className="size-6 sm:size-7" />
-                    <p className='text-xs'>Categories</p>
-                </Link>
-                <Link className="flex flex-col gap-2 items-center" href="/admin/newProduct">
-                    <DocumentPlusIcon className="size-6 sm:size-7" />
-                    <p className='text-xs text-center'>New Product</p>
-                </Link>
-                <Link className="flex flex-col gap-2 items-center" href="/admin/newCategory">
-                    <FolderPlusIcon className="size-6 sm:size-7" />
-                    <p className='text-xs text-center'>New Category</p>
-                </Link>
-            </ul>
-        </div>
-        {children}
-    </div>;
+  return (
+    <div className="flex rounded-lg">
+      <div className="flex min-h-[calc(100vh-66px)] w-fit flex-col gap-5 rounded-lg bg-slate-50 p-1 sm:px-2">
+        <h2 className="text-center font-bold">Admin</h2>
+        <ul className="flex flex-col justify-center gap-3">
+          <Link className="flex flex-col items-center gap-2" href="/admin">
+            <ClipboardDocumentListIcon className="size-6 sm:size-7" />
+            <p className="text-xs">Inventory</p>
+          </Link>
+          <Link
+            className="flex flex-col items-center gap-2"
+            href="/admin/categories"
+          >
+            <FolderOpenIcon className="size-6 sm:size-7" />
+            <p className="text-xs">Categories</p>
+          </Link>
+          <Link
+            className="flex flex-col items-center gap-2"
+            href="/admin/newProduct"
+          >
+            <DocumentPlusIcon className="size-6 sm:size-7" />
+            <p className="text-center text-xs">New Product</p>
+          </Link>
+          <Link
+            className="flex flex-col items-center gap-2"
+            href="/admin/newCategory"
+          >
+            <FolderPlusIcon className="size-6 sm:size-7" />
+            <p className="text-center text-xs">New Category</p>
+          </Link>
+        </ul>
+      </div>
+      <div className="w-full px-2">{children}</div>
+    </div>
+  );
 }

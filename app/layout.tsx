@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header/Header";
 import { getServerSession } from "next-auth";
 import AuthProvider from "@/config/AuthProvider";
-import {CartProvider} from "@/config/CartProvider";
+import { CartProvider } from "@/config/CartProvider";
 import { Toaster } from "sonner";
 
 import "./globals.css";
@@ -20,8 +20,7 @@ export default function RootLayout({
   const session = getServerSession();
   return (
     <html lang="en" className="bg-orange-100">
-      <body className={`antialiased max-w-screen-xl mx-auto`}>
-
+      <body className={`mx-auto max-w-screen-xl antialiased`}>
         <AuthProvider session={session}>
           <CartProvider>
             <Toaster richColors position="bottom-center" />

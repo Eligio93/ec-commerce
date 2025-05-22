@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
           if (user) {
             const matchingPassword = await bcrypt.compare(
               credentials.password,
-              user.password
+              user.password,
             );
             if (matchingPassword) {
               return user;
@@ -57,7 +57,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user, account, profile }) {
       //if the user login with Google
       if (account?.provider === "google") {
         const googleProfile = profile as GoogleProfile;
@@ -69,7 +69,7 @@ export const authOptions: NextAuthOptions = {
           });
           if (!existingUser) {
             //if it s not there creates a new user
-            const user: HydratedDocument<UserInterface> = new User({
+            const user = new User({
               name: googleProfile.given_name,
               lastName: googleProfile.family_name,
               email: googleProfile.email,
@@ -99,17 +99,16 @@ export const authOptions: NextAuthOptions = {
       }
       if (account?.provider === "google") {
         await connectDB();
-        const existingUser: HydratedDocument<UserInterface> | null =
-          await User.findOne({
-            email: profile?.email,
-          });
+        const existingUser: UserInterface | null = await User.findOne({
+          email: profile?.email,
+        });
         token.userId = existingUser?._id;
         token.isAdmin = existingUser?.isAdmin as boolean;
       }
 
       return token;
     },
-    async session({ session, user, token }) {
+    async session({ session, token }) {
       if (token) {
         session.user = {
           ...session.user,

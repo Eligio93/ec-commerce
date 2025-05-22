@@ -23,7 +23,7 @@ const UserSchema = new Schema<UserInterface>(
     isAdmin: { type: Boolean, required: true },
     isRegistered: { type: Boolean, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 const User =
   mongoose.models.User<UserInterface> ||

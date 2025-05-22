@@ -85,7 +85,7 @@ export async function POST(req: Request) {
       images,
       validatedProduct.data.title,
     ); //put images in newProduct.title folder in cloudinary
-    const newProduct= new Product({
+    const newProduct = new Product({
       name: validatedProduct.data.title,
       description: validatedProduct.data.description,
       brand: validatedProduct.data.brand,

@@ -10,11 +10,11 @@ export default withAuth(
         return NextResponse.next();
       } else {
         return NextResponse.redirect(
-          new URL("/accessDenied", req.nextUrl.origin)
+          new URL("/accessDenied", req.nextUrl.origin),
         );
       }
     }
-  }
+  },
 );
 
 export const config = { matcher: ["/admin/:path*", "/dashboard"] };

@@ -11,11 +11,7 @@ type Country = {
   label: string;
 };
 
-export default function DashboardAddress({
-  user,
-}: {
-  user: UserInterface;
-}) {
+export default function DashboardAddress({ user }: { user: UserInterface }) {
   const [countries, setCountries] = useState<Country[]>([]);
   const [formFields, setFormFields] = useState({
     country: user.address?.country,
@@ -28,13 +24,13 @@ export default function DashboardAddress({
     addressValidationState | undefined
   >(undefined);
   const [isEditing, setIsEditing] = useState(false);
-  const { data: session, status, update } = useSession()
+  const { data: session, status, update } = useSession();
 
   function removeEmoji(string: string) {
     return string
       .replace(
         /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
-        ""
+        "",
       )
       .replace(/\s+/g, " ")
       .trim();
@@ -50,7 +46,7 @@ export default function DashboardAddress({
   //API CALL TO GET COUNTRIES IN THE WORLD
   useEffect(() => {
     fetch(
-      "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
+      "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code",
     )
       .then((response) => response.json())
       .then((data) => {
@@ -82,25 +78,25 @@ export default function DashboardAddress({
         `${process.env.NEXT_PUBLIC_URL}/api/users/${user._id}`,
         {
           method: "PUT",
-          body: JSON.stringify({ ...formFields, formSource: 'Address' }),
-        }
+          body: JSON.stringify({ ...formFields, formSource: "Address" }),
+        },
       );
       const data = await res.json();
       if (!res.ok) {
         if (res.status === 404) {
-          toast.error('User not found. Please refresh the page')
+          toast.error("User not found. Please refresh the page");
         }
         setResponseData(data);
       } else {
-        setResponseData(undefined)
-        setIsEditing(false)
-        toast.success('Profile updated successfully')
+        setResponseData(undefined);
+        setIsEditing(false);
+        toast.success("Profile updated successfully");
       }
     } catch (error) {
       console.log("ERROR", error);
       toast.error("Something went wrong");
     } finally {
-      update()
+      update();
     }
   }
   return (
@@ -108,7 +104,7 @@ export default function DashboardAddress({
       <div className="flex justify-between">
         <h2>Address</h2>
         <button
-          className={`${isEditing && "bg-yellow-200 rounded-full py-1/2 px-2"}`}
+          className={`${isEditing && "py-1/2 rounded-full bg-yellow-200 px-2"}`}
           onClick={cancelEditing}
         >
           {isEditing ? "Cancel" : "Edit"}
@@ -124,14 +120,15 @@ export default function DashboardAddress({
           <select
             name="country"
             id="country"
-            className="bg-white w-[70%] "
+            className="w-[70%] bg-white"
             onChange={selectCountry}
-            value={`${formFields.country
-              ? countries.find(
-                (c) => removeEmoji(c.label) === formFields.country
-              )?.label
-              : "--Select Country--"
-              }`}
+            value={`${
+              formFields.country
+                ? countries.find(
+                    (c) => removeEmoji(c.label) === formFields.country,
+                  )?.label
+                : "--Select Country--"
+            }`}
             disabled={!isEditing}
           >
             <option value={undefined} disabled>
@@ -145,7 +142,7 @@ export default function DashboardAddress({
           </select>
         </section>
         {responseData?.errors?.country && (
-          <p className="self-end w-[60%] text-sm text-red-500">
+          <p className="w-[60%] self-end text-sm text-red-500">
             {responseData.errors.country}
           </p>
         )}
@@ -159,13 +156,13 @@ export default function DashboardAddress({
             type="text"
             id="city"
             value={formFields.city}
-            className="border w-[70%]"
+            className="w-[70%] border"
             placeholder="Rome"
             disabled={!isEditing}
           />
         </section>
         {responseData?.errors?.city && (
-          <p className="self-end w-[60%] text-sm text-red-500">
+          <p className="w-[60%] self-end text-sm text-red-500">
             {responseData.errors.city}
           </p>
         )}
@@ -178,7 +175,7 @@ export default function DashboardAddress({
             type="string"
             id="zip"
             value={formFields.zipCode}
-            className="border w-[70%]"
+            className="w-[70%] border"
             autoComplete="off"
             placeholder="00100"
             disabled={!isEditing}
@@ -186,7 +183,7 @@ export default function DashboardAddress({
           />
         </section>
         {responseData?.errors?.zipCode && (
-          <p className="self-end w-[60%] text-sm text-red-500">
+          <p className="w-[60%] self-end text-sm text-red-500">
             {responseData.errors.zipCode}
           </p>
         )}
@@ -199,14 +196,14 @@ export default function DashboardAddress({
             type="text"
             id="streetLine1"
             name="streetLine1"
-            className="border w-[70%]"
+            className="w-[70%] border"
             value={formFields.streetLine1}
             placeholder="Via Roma 1"
             disabled={!isEditing}
           />
         </section>
         {responseData?.errors?.streetLine1 && (
-          <p className="self-end w-[60%] text-sm text-red-500">
+          <p className="w-[60%] self-end text-sm text-red-500">
             {responseData.errors.streetLine1}
           </p>
         )}
@@ -219,13 +216,13 @@ export default function DashboardAddress({
             type="text"
             id="streetLine2"
             name="streetLine2"
-            className="border w-[70%]"
+            className="w-[70%] border"
             disabled={!isEditing}
             value={formFields.streetLine2}
           />
         </section>
         {responseData?.errors?.streetLine2 && (
-          <p className="self-end w-[60%] text-sm text-red-500">
+          <p className="w-[60%] self-end text-sm text-red-500">
             {responseData.errors.streetLine2}
           </p>
         )}

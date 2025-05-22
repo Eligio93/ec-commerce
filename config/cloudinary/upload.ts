@@ -12,7 +12,7 @@ cloudinary.config({
 
 export async function uploadMultipleImages(
   files: File[],
-  productTitle: string
+  productTitle: string,
 ) {
   const urlArray: string[] = [];
   for (const file of files) {
@@ -45,7 +45,7 @@ export async function uploadCategoryImage(file: File, categoryTitle: string) {
         { folder: `satur/categories/${categoryTitle}` },
         (error, uploadResult) => {
           return resolve(uploadResult as UploadApiResponse);
-        }
+        },
       )
       .end(buffer);
   });

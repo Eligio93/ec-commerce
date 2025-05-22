@@ -1,6 +1,6 @@
 "use client";
 import useEmblaCarousel from "embla-carousel-react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import menHeroImg from "@/public/menHero.jpg";
 import womanHeroImg from "@/public/womenHero.jpg";
 import Image from "next/image";
@@ -27,7 +27,6 @@ export default function Hero() {
     }
   }, [emblaApi]);
 
-
   function handleDotClick(index: number) {
     if (emblaApi) {
       emblaApi.scrollTo(index);
@@ -36,43 +35,47 @@ export default function Hero() {
   }
 
   return (
-    <div className="embla overflow-hidden flex flex-col gap-3" ref={emblaRef}>
-      <div className="embla__container flex max-h-[425px] gap-5">
-        <div className="embla__slide flex-[0_0_100%] relative sm:flex-1 h-full">
+    <div className="embla flex flex-col gap-3 overflow-hidden" ref={emblaRef}>
+      <div className="embla__container flex h-[500px] gap-5 rounded-lg">
+        <div className="embla__slide relative flex-[0_0_100%] sm:flex-1">
           <Image
             src={menHeroImg}
             alt="menHeroImg"
             priority
-            className="rounded-lg"
+            className="h-full rounded-lg object-cover"
           />
           <Link
-            className="absolute bottom-6 left-3 rounded-lg bg-orange-400 lg:p-3 p-2 font-bold transition-colors duration-200  hover:bg-orange-800 hover:text-white"
+            className="absolute bottom-6 left-3 rounded-lg bg-orange-400 p-2 font-bold transition-colors duration-200 hover:bg-orange-800 hover:text-white lg:p-3"
             href={"/products/?gender=men"}
           >
             Explore Men
           </Link>
         </div>
-        <div className="embla__slide flex-[0_0_100%] relative sm:flex-1 h-full">
+        <div className="embla__slide relative flex-[0_0_100%] sm:flex-1">
           <Image
-            className="rounded-lg"
+            className="h-full rounded-lg object-cover"
             src={womanHeroImg}
             alt="menHeroImg"
             priority
           />
           <Link
-            className="absolute bottom-6 left-3 rounded-lg bg-orange-400 lg:p-3 p-2 font-bold transition-colors duration-200  hover:bg-orange-800 hover:text-white"
+            className="absolute bottom-6 left-3 rounded-lg bg-orange-400 p-2 font-bold transition-colors duration-200 hover:bg-orange-800 hover:text-white lg:p-3"
             href={"/products?gender=women"}
           >
             Explore Women
           </Link>
         </div>
       </div>
-      <div className="mx-auto flex gap-3 *:border-2 *:border-orange-800 *:h-[12px] *:w-[12px] *:rounded-full">
-        <div className={`${selectedDot === 0 ? "bg-orange-800" : "bg-orange-100"} sm:hidden  w-[10px]  `} onClick={() => handleDotClick(0)}></div>
-        <div className={`${selectedDot === 1 ? "bg-orange-800" : "bg-orange-100"} sm:hidden h-[10px] w-[10px]`} onClick={() => handleDotClick(1)}></div>
+      <div className="mx-auto flex gap-3 *:h-[12px] *:w-[12px] *:rounded-full *:border-2 *:border-orange-800">
+        <div
+          className={`${selectedDot === 0 ? "bg-orange-800" : "bg-orange-100"} w-[10px] sm:hidden`}
+          onClick={() => handleDotClick(0)}
+        ></div>
+        <div
+          className={`${selectedDot === 1 ? "bg-orange-800" : "bg-orange-100"} h-[10px] w-[10px] sm:hidden`}
+          onClick={() => handleDotClick(1)}
+        ></div>
       </div>
-
-
     </div>
   );
 }

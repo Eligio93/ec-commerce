@@ -4,7 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer utilities {
   input[id="numberInputCart"]::-webkit-inner-spin-button,
   input[id="numberInputCart"]::-webkit-outer-spin-button {
@@ -16,5 +15,3 @@
     -moz-appearance: textfield;
   }
 }
-
-

@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 //DELETE CATEGORY
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   //check if categoryId exists
   const categoryId = (await params).id;
@@ -25,7 +25,7 @@ export async function DELETE(
       {
         message: "Category ID not found. Try Again!",
       },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -37,14 +37,14 @@ export async function DELETE(
   if (productsWithCategory.length > 0) {
     return Response.json(
       { message: "Category has some products related to it. Try Again!" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   await Category.findByIdAndDelete(categoryId);
   return Response.json(
     { message: "Category deleted successfully" },
-    { status: 200 }
+    { status: 200 },
   );
 }
 
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
       {
         errors: validatedCategory.error.flatten().fieldErrors,
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   try {
@@ -72,12 +72,12 @@ export async function POST(request: Request) {
         {
           message: "Category already exists",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const imageUrl: string = await uploadCategoryImage(
       validatedCategory.data.image as File,
-      validatedCategory.data.name
+      validatedCategory.data.name,
     );
 
     const newCategory = new Category({
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
     await newCategory.save();
     return Response.json(
       { message: "Category created successfully" },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.log(error);
@@ -100,7 +100,7 @@ export async function POST(request: Request) {
 // UPDATE A CATEGORY
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const categoryId = (await params).id;
   console.log(categoryId, "CATEGORY ID");
@@ -113,7 +113,7 @@ export async function PUT(
       {
         errors: validatedCategory.error.flatten().fieldErrors,
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   try {
@@ -127,14 +127,14 @@ export async function PUT(
         {
           message: "Category with the same name already exists",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     let imageUrl: string | File = validatedCategory.data.image;
     if (typeof validatedCategory.data.image !== "string") {
       imageUrl = await uploadCategoryImage(
         validatedCategory.data.image,
-        validatedCategory.data.name
+        validatedCategory.data.name,
       );
     }
 
@@ -146,7 +146,7 @@ export async function PUT(
     });
     return Response.json(
       { message: "Category updated successfully" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.log(error);
