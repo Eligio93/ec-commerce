@@ -4,6 +4,7 @@ import connectDB from "@/config/database/connectDB";
 import Product from "@/schemas/Product";
 import ProductInterface from "@/interfaces/product.interface";
 import Category from "@/schemas/Category";
+import { stripe } from "@/config/Stripe/stripe";
 //GET ALL PRODUCTS
 export async function GET(
   request: Request,
@@ -100,7 +101,26 @@ export async function POST(req: Request) {
       views: 0,
       isLive: validatedProduct.data.isLive,
     });
-    console.log("NEW PRoduct", newProduct);
+    const stripeProduct = await stripe.products.create({
+      name: newProduct.name,
+      active: newProduct.isLive,
+      description: newProduct.description,
+      images: imagesUrl,
+      default_price_data: {
+        currency: "AUD",
+        tax_behavior: "inclusive",
+        unit_amount: Math.round(newProduct.price * 100),
+      },
+      tax_code: "txcd_99999999",
+    });
+    if (!stripeProduct) {
+      return Response.json(
+        {
+          message: "Stripe Product Creation Failed",
+        },
+        { status: 500 },
+      );
+    }
     await newProduct.save();
     return Response.json(
       {
