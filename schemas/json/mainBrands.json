@@ -2,25 +2,25 @@
   {
     "name": "Reuzel",
     "image": "/reuzelLogo.jpg",
-    "link": "/products?brands=reuzel",
+    "link": "/products?brand=Reuzel",
     "isFeatured": true
   },
   {
     "name": "Proraso",
     "image": "/prorasoLogo.jpg",
-    "link": "/products?brands=proraso",
+    "link": "/products?brand=Proraso",
     "isFeatured": true
   },
   {
     "name": "Marvis",
     "image": "/marvisLogo.webp",
-    "link": "/products?brands=marvis",
+    "link": "/products?brand=Marvis",
     "isFeatured": true
   },
   {
     "name": "Pantene",
     "image": "/panteneLogo.jpg",
-    "link": "/products?brands=pantene",
+    "link": "/products?brand=Pantene",
     "isFeatured": true
   }
 ]
