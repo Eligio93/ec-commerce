@@ -20,6 +20,7 @@ export default async function ProductPage({
   const product: ProductInterface | null = await Product.findOne({
     _id: id,
   }).populate("category");
+
   if (product) {
     return (
       <div className="flex flex-col gap-5 p-5">
@@ -64,7 +65,9 @@ export default async function ProductPage({
                   </p>
                 ) : null}
               </div>
-              <AddToCartController {...JSON.parse(JSON.stringify(product))} />
+              <AddToCartController
+                product={JSON.parse(JSON.stringify(product))}
+              />
             </div>
           </div>
         </div>
