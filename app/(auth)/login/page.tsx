@@ -2,7 +2,6 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
 export default function Login() {
@@ -10,13 +9,13 @@ export default function Login() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  async function handleLogin(e: any) {
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(undefined);
     const res = await signIn("credentials", {
       redirect: false,
-      email: e.target.email.value,
-      password: e.target.password.value,
+      email: e.currentTarget.email.value,
+      password: e.currentTarget.password.value,
     });
     if (res?.error) {
       setError("Invalid email or password");
