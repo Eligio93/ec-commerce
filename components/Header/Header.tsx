@@ -77,7 +77,7 @@ export default function Header() {
       <div className="flex-1 justify-start lg:hidden">
         {/* Hamburger */}
         <div
-          onClick={(e) => {
+          onClick={() => {
             closeAllMenus();
             setOpenMenu(!openMenu);
           }}
@@ -112,7 +112,7 @@ export default function Header() {
         <div
           className="relative size-6 cursor-pointer text-orange-400 lg:size-8"
           data-cart-icon
-          onClick={(e) => {
+          onClick={() => {
             closeAllMenus();
             setOpenCart(!openCart);
           }}
@@ -131,7 +131,7 @@ export default function Header() {
         <div
           className="relative size-6 cursor-pointer text-orange-400 lg:size-8"
           data-user-icon
-          onClick={(e) => {
+          onClick={() => {
             closeAllMenus();
             setOpenUser(!openUser);
           }}
