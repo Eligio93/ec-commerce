@@ -12,6 +12,10 @@ export default function Admin() {
     [],
   );
 
+  function onDeleteAction(product: ProductInterface) {
+    setProducts((prevProducts) => prevProducts?.filter((prevProduct) => product._id !== prevProduct._id) || []);
+  }
+
   useEffect(() => {
     async function getProducts() {
       try {
@@ -62,7 +66,7 @@ export default function Admin() {
           </div>
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <InventoryProductCard key={product.name} product={product} />
+              <InventoryProductCard key={product.name} product={product} onDeleteAction={onDeleteAction} />
             ))
           ) : (
             <div>
