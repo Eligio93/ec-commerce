@@ -50,7 +50,7 @@ export default function CategoryForm({ category }: CategoryFormProps) {
     try {
       setLoading(true);
       const res = await fetch(
-        `http://localhost:3000/api/categories${category ? `/${category._id}` : ""}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/categories${category ? `/${category._id}` : ""}`,
         {
           method: category ? "PUT" : "POST",
           body: formData,
@@ -167,7 +167,7 @@ export default function CategoryForm({ category }: CategoryFormProps) {
                     {files.length == 0 && (
                       <>
                         <p className="hidden text-sm italic opacity-80 lg:block">
-                          Drag 'n' drop or click to select an image
+                          Drag &apos;n&apos; drop or click to select an image
                         </p>
                         <p className="text-sm italic opacity-80 lg:hidden">
                           Touch to select an image

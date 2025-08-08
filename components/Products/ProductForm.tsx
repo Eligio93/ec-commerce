@@ -26,7 +26,7 @@ export default function ProductForm({ product }: formProps) {
   //fetch all categories
   useEffect(() => {
     async function getCategories() {
-      const res = await fetch("http://localhost:3000/api/categories");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/categories`);
       const categories = await res.json();
       setCategories(categories);
     }
@@ -45,7 +45,7 @@ export default function ProductForm({ product }: formProps) {
     });
     try {
       const res = await fetch(
-        `http://localhost:3000/api/products${product ? `/${product._id}` : ""}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/products${product ? `/${product._id}` : ""}`,
         {
           method: product ? "PUT" : "POST",
           body: formData,

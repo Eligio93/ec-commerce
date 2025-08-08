@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { toast } from "sonner";
+import ConfirmationPopUp from "../ConfirmationPopUp";
 
 type Props = {
   category: CategoryInterface;
@@ -20,7 +21,7 @@ export default function InventoryCategoryCard({ category }: Props) {
 
   async function handleCategoryDelete() {
     const res = await fetch(
-      `http://localhost:3000/api/categories/${category._id}`,
+      `${process.env.NEXT_PUBLIC_URL}/api/categories/${category._id}`,
       {
         method: "DELETE",
       },
@@ -77,28 +78,12 @@ export default function InventoryCategoryCard({ category }: Props) {
         </p>
       </div>
       {openPopUp && (
-        <div className="absolute left-0 top-0 z-30 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-          <div className="z-[9999] flex h-[30%] w-4/5 flex-col items-center justify-center gap-5 rounded-lg bg-white p-3 md:w-2/4">
-            <p className="text-center">
-              Are you sure you want to delete this category?
-            </p>
-            <p className="font-bold">{category.name}</p>
-            <div className="flex gap-5">
-              <button
-                className="rounded-full bg-red-700 px-6 py-1 font-bold text-white hover:bg-red-500"
-                onClick={() => setOpenPopUp(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="rounded-full bg-green-900 px-6 py-1 font-bold text-white transition-colors hover:bg-green-700"
-                onClick={handleCategoryDelete}
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmationPopUp
+          title="Are you sure you want to delete this category?"
+          specifiedElement={category.name}
+          setPopUpState={setOpenPopUp}
+          confirmAction={handleCategoryDelete}
+        />
       )}
     </>
   );
