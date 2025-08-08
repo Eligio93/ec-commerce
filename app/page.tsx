@@ -4,7 +4,7 @@ import NewArrivals from "@/components/Home/NewArrivals/NewArrivals";
 import MainBrands from "@/components/Home/MainBrands/MainBrands";
 export default function Home() {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 p-1">
       <Hero />
       <MainCategories />
       <NewArrivals />
