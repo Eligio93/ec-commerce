@@ -5,7 +5,11 @@ import Product from "@/schemas/Product";
 import ProductInterface from "@/interfaces/product.interface";
 import Category from "@/schemas/Category";
 import { stripe } from "@/config/Stripe/stripe";
-//GET ALL PRODUCTS
+/*
+
+GET ALL PRODUCTS
+
+*/
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -27,6 +31,7 @@ export async function GET(
       }
     }
   } catch (error) {
+    console.log("Error in getting products", error);
     return Response.json(
       { message: "Impossible to retrieve Product/s" },
       { status: 404 },
@@ -34,7 +39,12 @@ export async function GET(
   }
 }
 
-//Creates a new product
+/*
+
+CREATE A NEW PRODUCT
+
+*/
+
 export async function POST(req: Request) {
   const data = await req.formData();
   const dataObject = Object.fromEntries(data);
@@ -101,8 +111,19 @@ export async function POST(req: Request) {
       views: 0,
       isLive: validatedProduct.data.isLive,
     });
+
+    const DBProduct = await newProduct.save();
+    if (!DBProduct) {
+      return Response.json(
+        {
+          message: "Product Creation Failed",
+        },
+        { status: 500 },
+      );
+    }
     const stripeProduct = await stripe.products.create({
       name: newProduct.name,
+      id: newProduct._id.toString(),
       active: newProduct.isLive,
       description: newProduct.description,
       images: imagesUrl,
@@ -121,7 +142,6 @@ export async function POST(req: Request) {
         { status: 500 },
       );
     }
-    await newProduct.save();
     return Response.json(
       {
         message: "Product created successfully",
@@ -133,6 +153,12 @@ export async function POST(req: Request) {
     return Response.json({ message: "Something went wrong" }, { status: 500 });
   }
 }
+
+/*
+
+UPDATEPRODUCT
+
+*/
 
 export async function PUT(
   req: Request,
@@ -233,4 +259,41 @@ export async function PUT(
     console.log("SERVER ERROR", error);
     return Response.json({ message: "Something went wrong" }, { status: 500 });
   }
+}
+
+/*
+
+DELETE PRODUCT
+
+*/
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const productId = (await params).id[0];
+  if (!productId) {
+    return Response.json(
+      {
+        message: "Product to edit not found",
+      },
+      { status: 404 },
+    );
+  }
+  await connectDB();
+  const deletedProduct = await Product.findOneAndDelete({ _id: productId });
+  if (!deletedProduct) {
+    return Response.json(
+      {
+        message: "Product to edit not found",
+      },
+      { status: 404 },
+    );
+  }
+  return Response.json(
+    {
+      message: "Product deleted successfully",
+    },
+    { status: 201 },
+  );
 }
