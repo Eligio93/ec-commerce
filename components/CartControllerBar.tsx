@@ -1,7 +1,7 @@
 "use client";
 
 import { CartProduct } from "@/config/CartProvider";
-import { ReactHTMLElement, useState } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import { cartContext } from "@/config/CartProvider";
 import Image from "next/image";
