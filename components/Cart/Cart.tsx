@@ -32,7 +32,7 @@ export default function Cart({
           <div className="flex flex-col gap-4 p-2">
             {cartProducts.map((product: CartProduct) => (
               <CartProductListing
-                key={product.product._id.toString()}
+                key={product.product._id?.toString()}
                 cartItem={product}
               />
             ))}
@@ -51,8 +51,8 @@ export default function Cart({
                 .toFixed(2)}
             </p>
             <Link
+              href={"/checkout"}
               className="rounded-lg bg-green-500 py-1 text-center text-sm font-bold transition-colors duration-200 hover:bg-green-700 hover:text-white sm:text-base lg:py-2"
-              href={"#"}
             >
               Checkout
             </Link>
