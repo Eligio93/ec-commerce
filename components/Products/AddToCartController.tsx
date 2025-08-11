@@ -10,17 +10,9 @@ export default function AddToCartController({
 }: {
   product: ProductInterface;
 }) {
-  const {
-    cartProducts,
-    addOne,
-    addToCart,
-    removeOne,
-    clearCart,
-    setQuantity,
-    removeProduct,
-  } = useContext(cartContext);
+  const { cartProducts, addToCart } = useContext(cartContext);
   const existingCartProduct: CartProduct = cartProducts.find(
-    (cartProd: CartProduct) => cartProd.product._id === product._id,
+    (cartProd: CartProduct) => cartProd?.product?._id === product?._id,
   );
 
   if (existingCartProduct) {
